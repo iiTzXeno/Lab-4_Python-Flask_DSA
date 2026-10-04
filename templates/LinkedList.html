@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Linked List Manager</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        .form-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Linked List Operations</h1>
+    
+    <nav>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="display: inline; margin-right: 15px;"><a href="/">Home</a></li>
+            <li style="display: inline; margin-right: 15px;"><a href="/profile">Profile</a></li>
+            <li style="display: inline; margin-right: 15px;"><a href="/works">Works</a></li>
+            <li style="display: inline;"><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+    <hr>
+
+    <div class="grid-container">
+        
+
+        <div class="form-stack">
+            <form action="/works/LinkedList" method="post">
+                <h3>Basic Operations</h3>
+                <label for="basic_value">Value:</label><br>
+                <input type="text" id="basic_value" name="basic_value" placeholder="Enter value">
+                <br><br>
+                <button type="submit" name="action" value="insert_beginning">Insert at Beginning</button>
+                <button type="submit" name="action" value="insert_end">Insert at End</button>
+                <button type="submit" name="action" value="search">Search Value</button>
+            </form>
+
+            <form action="/works/LinkedList" method="post">
+                <h3>Insert After Node</h3>
+                <label for="target">Existing Node Value:</label><br>
+                <input type="text" id="target" name="target" placeholder="Target node">
+                <br><br>
+                <label for="insert_value">New Value to Insert:</label><br>
+                <input type="text" id="insert_value" name="insert_value" placeholder="New value">
+                <br><br>
+                <button type="submit" name="action" value="insert_after">Insert After</button>
+            </form>
+        </div>
+
+        <div class="form-stack">
+            <form action="/works/LinkedList" method="post">
+                <h3>Remove Specific Value</h3>
+                <label for="remove_value">Value to Remove:</label><br>
+                <input type="text" id="remove_value" name="remove_value" placeholder="Value to delete">
+                <br><br>
+                <button type="submit" name="action" value="remove_at">Remove At</button>
+            </form>
+
+            <form action="/works/LinkedList" method="post">
+                <h3>Quick Removals</h3>
+                <button type="submit" name="action" value="remove_beginning">Remove Beginning</button>
+                <button type="submit" name="action" value="remove_end">Remove End</button>
+            </form>
+        </div>
+
+        <div>
+            <h3>Output</h3>
+
+            {% if message %}
+            <p><strong>Status:</strong> {{ message }}</p>
+            {% else %}
+            <p><strong>Status:</strong> Ready</p>
+            {% endif %}
+
+            <hr>
+
+            <p><strong>Current Linked List:</strong></p>
+            <ul>
+                {% if elements %}
+                    {% for item in elements %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li>List is empty</li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

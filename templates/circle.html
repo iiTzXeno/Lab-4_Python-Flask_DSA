@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Area of a Circle</title>
+</head>
+<body>
+    <h1>Area of a Circle</h1>
+
+        <nav>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="display: inline; margin-right: 15px;"><a href="/">Home</a></li>
+            <li style="display: inline; margin-right: 15px;"><a href="/profile">Profile</a></li>
+            <li style="display: inline; margin-right: 15px;"><a href="/works">Works</a></li>
+            <li style="display: inline;"><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+    <hr>
+
+    <form action="/works/area/circle" method="post">
+        <label for="radius">Enter a radius:</label>
+        <input type="text" id="radius" name="radius">
+        <input type="submit" value="Compute">
+    </form>
+
+    {% if error %}
+    <p>ValueError: {{ error }}</p>
+    {% endif %}
+
+    {% if result %}
+    <p>Area of the circle: {{ result }}</p>
+    {% endif %}
+</body>
+</html>

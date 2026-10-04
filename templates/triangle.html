@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Area of a Triangle</title>
+</head>
+<body>
+    <h1>Calculate Area of a Triangle</h1>
+    
+    <nav>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="display: inline; margin-right: 15px;"><a href="/">Home</a></li>
+            <li style="display: inline; margin-right: 15px;"><a href="/profile">Profile</a></li>
+            <li style="display: inline; margin-right: 15px;"><a href="/works">Works</a></li>
+            <li style="display: inline;"><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+    <hr>
+
+    <form action="/works/area/triangle" method="post">
+        <label for="base">Enter base:</label><br>
+        <input type="text" id="base" name="base"><br><br>
+
+        <label for="height">Enter height:</label><br>
+        <input type="text" id="height" name="height"><br><br>
+
+        <input type="submit" value="Calculate">
+    </form>
+
+    {% if error %}
+    <p>ValueError: {{ error }}</p>
+    {% endif %}
+
+    {% if result %}
+    <p>Area of the triangle: {{ result }}</p>
+    {% endif %}
+
+    <br>
+    <a href="/works">Back to Works</a>
+</body>
+</html>
