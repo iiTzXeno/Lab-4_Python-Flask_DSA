@@ -9,13 +9,14 @@
             font-family: sans-serif;
             margin: 40px;
         }
-        h1, h3 {
-            color: #ffffff;
+        .top-header {
+            text-align: center;
         }
         nav ul {
             list-style-type: none;
             padding: 0;
             display: flex;
+            justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
         }
@@ -35,12 +36,15 @@
             transform: translateY(-3px);
             box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
         }
+        h1, h3 {
+            color: #ffffff;
+        }
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 30px;
             align-items: start;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .form-stack {
             display: flex;
@@ -89,16 +93,17 @@
     </style>
 </head>
 <body>
-    <h1>Linked List Operations</h1>
-    
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/works">Works</a></li>
-            <li><a href="/contact">Contact</a></li>
-        </ul>
-    </nav>
+    <div class="top-header">
+        <h1>Linked List Operations</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/works">Works</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
     <hr>
 
     <div class="grid-container">
