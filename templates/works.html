@@ -4,14 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Works</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #ffffff;
+        }
+        nav ul, .works-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        nav li a, .works-list li a {
+            display: inline-block;
+            background-color: #1e1e1e;
+            color: #bb86fc;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        nav li a:hover, .works-list li a:hover {
+            background-color: #bb86fc;
+            color: #121212;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+        }
+    </style>
 </head>
 <body>
     <h1>Works</h1>
-    <ul style="list-style-type: none; padding: 0;">
-        <li style="display: inline; margin-right: 15px;"><a href="/works/touppercase">toUpperCase</a></li>
-        <li style="display: inline; margin-right: 15px;"><a href="/works/area/circle">Area of a Circle</a></li>
-        <li style="display: inline;margin-right: 15px;"><a href="/works/area/triangle">Area of a Triangle</a></li>
-        <li style="display: inline; margin-right: 15px;"><a href="/works/LinkedList">Linked List</a></li>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/works">Works</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+    <hr>
+
+    <ul class="works-list">
+        <li><a href="/works/touppercase">toUpperCase</a></li>
+        <li><a href="/works/area/circle">Area of a Circle</a></li>
+        <li><a href="/works/area/triangle">Area of a Triangle</a></li>
+        <li><a href="/works/LinkedList">Linked List</a></li>
     </ul>
 </body>
 </html>

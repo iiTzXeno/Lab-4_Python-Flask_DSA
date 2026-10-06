@@ -2,25 +2,75 @@
 <html>
 <head>
     <title>Contact Page</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: sans-serif;
+            margin: 40px;
+        }
+        h1, h2 {
+            color: #ffffff;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        nav li a {
+            display: inline-block;
+            background-color: #1e1e1e;
+            color: #bb86fc;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        nav li a:hover {
+            background-color: #bb86fc;
+            color: #121212;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+        }
+        .contact-card {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            max-width: 400px;
+            margin-top: 20px;
+        }
+        a {
+            color: #bb86fc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>Contact Us</h1>
 
     <nav>
-        <ul style="list-style-type: none; padding: 0;">
-            <li style="display: inline; margin-right: 15px;"><a href="/">Home</a></li>
-            <li style="display: inline; margin-right: 15px;"><a href="/profile">Profile</a></li>
-            <li style="display: inline; margin-right: 15px;"><a href="/works">Works</a></li>
-            <li style="display: inline;"><a href="/contact">Contact</a></li>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/works">Works</a></li>
+            <li><a href="/contact">Contact</a></li>
         </ul>
     </nav>
     <hr>
 
-    <h2>Contact Information</h2>
-    <p>Feel free to reach out to us with any questions or inquiries!</p>
-    <p><strong>Email:</strong> gaboytristan18@gmail.com</p>
-    <p><strong>GitHub:</strong> <a href="https://github.com/iiTzXeno">https://github.com/iiTzXeno</a></p>
-
+    <div class="contact-card">
+        <h2>Contact Information</h2>
+        <p>Feel free to reach out to us with any questions or inquiries!</p>
+        <p><strong>Email:</strong> gaboytristan18@gmail.com</p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/iiTzXeno" target="_blank">https://github.com/iiTzXeno</a></p>
+    </div>
 
     <br>
     <a href="/">Back to Home</a>
