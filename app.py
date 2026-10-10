@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from Node import Node, LinkedList
+from Node import Node, LinkedList, Stack, PostfixConverter, Queue, Deque
 
 app = Flask(__name__)
 
@@ -10,6 +10,13 @@ def index():
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+@app.route('/works')
+def works():
+    return render_template('works.html')
 
 @app.route('/works/touppercase', methods=['GET', 'POST'])
 def toUpperCase():
@@ -73,6 +80,10 @@ def atriangle():
     return render_template('triangle.html', result=result, error=error)
 
 my_linked_list = LinkedList()
+my_stack = Stack()
+my_queue = Queue()
+my_deque = Deque()
+my_postfix = PostfixConverter()
 
 @app.route('/works/LinkedList', methods=['GET', 'POST'])
 def linked_list_page():
@@ -132,14 +143,96 @@ def linked_list_page():
     elements = my_linked_list.get_elements()
     return render_template('linkedlist.html', elements=elements, message=message)
 
+@app.route('/works/stack', methods=['GET', 'POST'])
+def stack_page():
+    message = None
+    if request.method == 'POST':
+        action = request.form.get('action')
+
+        if action == 'push':
+            val = request.form.get('value', '').strip()
+            if val:
+                my_stack.push(val)
+                message = f"Pushed '{val}' onto the stack."
+            else:
+                message = "Please provide a value."
+
+        elif action == 'pop':
+            popped = my_stack.pop()
+            message = f"Popped value: {popped}" if popped is not None else "Stack is empty."
+
+    elements = my_stack.get_elements() if hasattr(my_stack, 'get_elements') else []
+    return render_template('stack.html', elements=elements, message=message)
+
+@app.route('/works/postfix', methods=['GET', 'POST'])
+def postfix_page():
+    result = None
+    error = None
+    if request.method == 'POST':
+        try:
+            expr = request.form.get('expression', '').strip()
+            if not expr:
+                raise ValueError("Expression cannot be empty.")
+            result = my_postfix.infix_to_postfix(expr)
+        except ValueError as e:
+            error = str(e)
+    return render_template('postfix.html', result=result, error=error)
+
+@app.route('/works/queue', methods=['GET', 'POST'])
+def queue_page():
+    message = None
+    if request.method == 'POST':
+        action = request.form.get('action')
+
+        if action == 'enqueue':
+            val = request.form.get('value', '').strip()
+            if val:
+                my_queue.enqueue(val)
+                message = f"Enqueued '{val}' to the queue."
+            else:
+                message = "Please provide a value."
+
+        elif action == 'dequeue':
+            dequeued = my_queue.dequeue()
+            message = f"Dequeued value: {dequeued}" if dequeued is not None else "Queue is empty."
+
+    elements = my_queue.get_elements() if hasattr(my_queue, 'get_elements') else []
+    return render_template('queue.html', elements=elements, message=message)
 
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
-@app.route('/works')
-def works():
-    return render_template('works.html')
+@app.route('/works/deque', methods=['GET', 'POST'])
+def deque_page():
+    message = None
+    if request.method == 'POST':
+        action = request.form.get('action')
+
+        if action == 'add_front':
+            val = request.form.get('value', '').strip()
+            if val:
+                my_deque.add_front(val)
+                message = f"Added '{val}' to front."
+            else:
+                message = "Please provide a value."
+
+        elif action == 'add_rear':
+            val = request.form.get('value', '').strip()
+            if val:
+                my_deque.add_rear(val)
+                message = f"Added '{val}' to rear."
+            else:
+                message = "Please provide a value."
+
+        elif action == 'remove_front':
+            removed = my_deque.remove_front()
+            message = f"Removed from front: {removed}" if removed is not None else "Deque is empty."
+
+        elif action == 'remove_rear':
+            removed = my_deque.remove_rear()
+            message = f"Removed from rear: {removed}" if removed is not None else "Deque is empty."
+
+    elements = my_deque.get_elements() if hasattr(my_deque, 'get_elements') else []
+    return render_template('deque.html', elements=elements, message=message)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

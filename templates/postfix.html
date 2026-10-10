@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PEMDAS Postfix Calculator</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        h1, h3 {
+            color: #ffffff;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        nav li a {
+            display: inline-block;
+            background-color: #1e1e1e;
+            color: #bb86fc;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        nav li a:hover {
+            background-color: #bb86fc;
+            color: #121212;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+        }
+        form {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            max-width: 320px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        input[type="text"] {
+            background-color: #121212;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px;
+            border-radius: 5px;
+            width: 90%;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        input[type="submit"] {
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #a368fc;
+            transform: translateY(-2px);
+        }
+        a {
+            color: #bb86fc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>PEMDAS Postfix Expression Converter</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/works">Works</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+    <hr>
+
+    <form action="/works/postfix" method="post">
+        <label for="expression">Enter Infix Expression (e.g., A+B*C):</label><br>
+        <input type="text" id="expression" name="expression"><br>
+        <input type="submit" value="Convert">
+    </form>
+
+    {% if error %}
+    <p>ValueError: {{ error }}</p>
+    {% endif %}
+
+    {% if result %}
+    <p><strong>Postfix Result:</strong> {{ result }}</p>
+    {% endif %}
+
+    <br>
+    <a href="/works">Back to Works</a>
+</body>
+</html>
