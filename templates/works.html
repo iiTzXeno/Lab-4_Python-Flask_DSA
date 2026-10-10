@@ -3,65 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Works</title>
+    <title>Portfolio Works</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             background-color: #121212;
             color: #e0e0e0;
             font-family: sans-serif;
-            margin: 40px;
-            text-align: center;
+            padding: 40px;
         }
-        h1 {
-            color: #ffffff;
-        }
-        nav ul, .works-list {
-            list-style-type: none;
-            padding: 0;
+        /* Top Navigation Header matching Home */
+        header {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto 50px auto;
         }
-        nav li a, .works-list li a {
-            display: inline-block;
-            background-color: #1e1e1e;
-            color: #bb86fc;
-            padding: 10px 20px;
-            border-radius: 25px;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
             text-decoration: none;
-            border: 1px solid #333;
-            transition: all 0.3s ease;
         }
-        nav li a:hover, .works-list li a:hover {
+        .logo span {
+            color: #bb86fc;
+        }
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 25px;
+        }
+        nav li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        nav li a:hover, nav li a.active {
+            color: #bb86fc;
+        }
+        .talk-btn {
             background-color: #bb86fc;
             color: #121212;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .talk-btn:hover {
+            background-color: #a368fc;
+            transform: translateY(-2px);
+        }
+
+        /* Works Container & Heading */
+        .works-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .works-header {
+            margin-bottom: 30px;
+        }
+        .works-header h1 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .works-header p {
+            color: #999;
+            font-size: 15px;
+        }
+
+        /* Professional Card Grid Layout */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            list-style: none;
+            padding: 0;
+        }
+        .work-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .work-card:hover {
+            border-color: #bb86fc;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(187, 134, 252, 0.15);
+        }
+        .work-info h3 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .work-info p {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .work-btn {
+            align-self: flex-start;
+            background-color: transparent;
+            color: #bb86fc;
+            border: 1px solid #bb86fc;
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .work-card:hover .work-btn {
+            background-color: #bb86fc;
+            color: #121212;
         }
     </style>
 </head>
 <body>
-    <h1>Works</h1>
 
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/works">Works</a></li>
-            <li><a href="/contact">Contact</a></li>
+    <!-- Header / Navbar -->
+    <header>
+        <a href="/" class="logo">Tristan<span>.</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">About</a></li>
+                <li><a href="/works" class="active">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="/contact" class="talk-btn">Let's Talk</a>
+    </header>
+
+    <!-- Works Section -->
+    <main class="works-container">
+        <div class="works-header">
+            <h1>Featured Works</h1>
+            <p>Check out some of the data structures, parsers, and handy web utilities I've built using Python Flask.</p>
+        </div>
+
+        <ul class="works-grid">
+
+            <!-- Uppercase Tool -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>String Uppercase Tool</h3>
+                    <p>A quick and simple utility that takes whatever text you type in and turns it into ALL CAPS instantly.</p>
+                </div>
+                <a href="/works/touppercase" class="work-btn">View Project</a>
+            </li>
+
+            <!-- Circle Area -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>Circle Area Calculator</h3>
+                    <p>Drop in a radius value and let the app handle the math to calculate the exact area of your circle.</p>
+                </div>
+                <a href="/works/area/circle" class="work-btn">View Project</a>
+            </li>
+
+            <!-- Triangle Area -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>Triangle Area Calculator</h3>
+                    <p>Input the base and height dimensions, and this tool will compute the triangle's surface area for you.</p>
+                </div>
+                <a href="/works/area/triangle" class="work-btn">View Project</a>
+            </li>
+
+            <!-- Linked List -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>Linked List Manager</h3>
+                    <p>A hands-on tool to play around with nodes. Add stuff to the front or back, search for items, and watch the list update live.</p>
+                </div>
+                <a href="/works/LinkedList" class="work-btn">View Project</a>
+            </li>
+
+            <!-- Stack -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>Stack (LIFO)</h3>
+                    <p>Last-In, First-Out in action. Push new items onto the stack or pop them right back off with clean node tracking.</p>
+                </div>
+                <a href="/works/stack" class="work-btn">View Project</a>
+            </li>
+
+            <!-- Postfix Converter -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>PEMDAS Postfix Converter</h3>
+                    <p>Type in a regular math expression (infix) and watch a stack instantly translate it into clean postfix notation.</p>
+                </div>
+                <a href="/works/postfix" class="work-btn">View Project</a>
+            </li>
+
+            <!-- Queue -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>Queue (FIFO)</h3>
+                    <p>First-In, First-Out queue setup. Enqueue new elements to the back and dequeue them cleanly from the front.</p>
+                </div>
+                <a href="/works/queue" class="work-btn">View Project</a>
+            </li>
+
+            <!-- Deque -->
+            <li class="work-card">
+                <div class="work-info">
+                    <h3>Double-Ended Queue (Deque)</h3>
+                    <p>The best of both worlds—lets you effortlessly add or remove items from either the front or the rear.</p>
+                </div>
+                <a href="/works/deque" class="work-btn">View Project</a>
+            </li>
+
         </ul>
-    </nav>
-    <hr>
+    </main>
 
-    <ul class="works-list">
-        <li><a href="/works/touppercase">toUpperCase</a></li>
-        <li><a href="/works/area/circle">Area of a Circle</a></li>
-        <li><a href="/works/area/triangle">Area of a Triangle</a></li>
-        <li><a href="/works/LinkedList">Linked List</a></li>
-        <li><a href="/works/stack">Stack</a></li>
-        <li><a href="/works/queue">Queue</a></li>
-        <li><a href="/works/deque">Deque</a></li>
-    </ul>
 </body>
 </html>

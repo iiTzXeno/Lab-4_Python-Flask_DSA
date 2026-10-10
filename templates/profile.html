@@ -1,102 +1,256 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Profile Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile / About</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             background-color: #121212;
             color: #e0e0e0;
             font-family: sans-serif;
-            margin: 40px;
-            text-align: center;
+            padding: 40px;
         }
-        h1, h2, h3 {
+        /* Top Navigation Header matching Home and Works */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto 50px auto;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             color: #ffffff;
+            text-decoration: none;
+        }
+        .logo span {
+            color: #bb86fc;
         }
         nav ul {
             list-style-type: none;
-            padding: 0;
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 25px;
         }
         nav li a {
-            display: inline-block;
-            background-color: #1e1e1e;
-            color: #bb86fc;
-            padding: 10px 20px;
-            border-radius: 25px;
+            color: #e0e0e0;
             text-decoration: none;
-            border: 1px solid #333;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
         }
-        nav li a:hover {
+        nav li a:hover, nav li a.active {
+            color: #bb86fc;
+        }
+        .talk-btn {
             background-color: #bb86fc;
             color: #121212;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
-        .profile-card {
-            background: #1e1e1e;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #333;
-            max-width: 450px;
-            margin: 20px auto;
-            text-align: left;
+        .talk-btn:hover {
+            background-color: #a368fc;
+            transform: translateY(-2px);
         }
-        .profile-card img {
-            border-radius: 10px;
-            border: 2px solid #444;
-            display: block;
+
+        /* Profile Layout Container */
+        .profile-container {
+            max-width: 1100px;
             margin: 0 auto;
         }
-        blockquote {
-            background: #121212;
-            border-left: 4px solid #bb86fc;
-            margin: 10px 0;
-            padding: 10px 15px;
-            font-style: italic;
-            color: #d1d1d1;
+
+        /* Hero / Bio Section */
+        .profile-hero {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+            align-items: center;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
         }
-        a {
+        .profile-img-container {
+            width: 100%;
+            height: 320px;
+            background-color: #121212;
+            border: 2px dashed #444;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            text-align: center;
+            padding: 20px;
+        }
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+        .profile-bio h1 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        .profile-bio h1 span {
             color: #bb86fc;
-            text-decoration: none;
         }
-        a:hover {
-            text-decoration: underline;
+        .profile-bio h3 {
+            color: #b0b0b0;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .profile-bio p {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Details Sections Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .detail-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .detail-card h3 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .detail-card ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .detail-card li {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .detail-card li strong {
+            color: #e0e0e0;
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .tag {
+            background-color: #121212;
+            color: #bb86fc;
+            border: 1px solid #333;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
-    <h1>My Profile</h1>
 
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/works">Works</a></li>
-            <li><a href="/contact">Contact</a></li>
-        </ul>
-    </nav>
-    <hr>
+    <!-- Header / Navbar -->
+    <header>
+        <a href="/" class="logo">Tristan<span>.</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile" class="active">About</a></li>
+                <li><a href="/works">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="/contact" class="talk-btn">Let's Talk</a>
+    </header>
 
-    <div class="profile-card">
-        <img src="{{ url_for('static', filename='profile.jpg') }}" alt="Profile Picture" width="150">
+    <!-- Main Profile Container -->
+    <main class="profile-container">
         
-        <h2>Personal Information</h2>
-        <p><strong>Name:</strong> Gaboy, Tristan Kyle T.</p>
-        <p><strong>Course and Section:</strong> BSCpE 2-1</p>
-        <p><strong>Subject:</strong> Data Structures and Algorithms</p>
-        
-        <h3>Favorite Motto / Saying</h3>
-        <blockquote>
-            "Carpe Diem!!!"
-        </blockquote>
-    </div>
+        <!-- Bio Hero Section -->
+        <section class="profile-hero">
+            <div class="profile-img-container">
+                <!-- Drop your profile picture filename in static/ or change path -->
+                <img src="{{ url_for('static', filename='profile.jpg') }}" alt="Profile Photo" onerror="this.style.display='none'; this.parentElement.innerText='Drop your photo here';">
+            </div>
+            <div class="profile-bio">
+                <h1>About <span>Me</span></h1>
+                <h3>Aspiring AI Engineer & Computer Engineering Student</h3>
+                <p>Hey there! I'm Tristan,a Computer Engineering student who loves turning complex logic into clean, functional web apps. Whether I'm building data structure tools or working with Python and Flask, I'm all about creating things that are smooth, efficient, and actually fun to use.</p>
+                <p>My long-term goal is to dive deep into AI engineering. I love collaborating with blocmates and friends on technical projects, taking charge when leadership is needed, and constantly pushing my skills further with every new build.</p>
+            </div>
+        </section>
 
-    <br>
-    <a href="/">Back to Home</a>
+        <!-- Detailed Cards Grid -->
+        <div class="details-grid">
+            
+            <!-- Education Card -->
+            <div class="detail-card">
+                <h3>Education</h3>
+                <ul>
+                    <li><strong>Degree:</strong> Bachelor of Science in Computer Engineering (BSCpE)</li>
+                    <li><strong>University:</strong> Polytechnic University of the Philippines (PUP)</li>
+                    <li><strong>Section:</strong> BSCpE 2-1</li>
+                </ul>
+            </div>
+
+            <!-- Tech Stack & Skills Card -->
+            <div class="detail-card">
+                <h3>Skills & Tech Stack</h3>
+                <div class="tag-container">
+                    <span class="tag">Python</span>
+                    <span class="tag">Flask</span>
+                    <span class="tag">HTML / CSS</span>
+                    <span class="tag">MySQL / SQLite</span>
+                    <span class="tag">Data Structures</span>
+                    <span class="tag">[Add Skill]</span>
+                    <span class="tag">[Add Skill]</span>
+                </div>
+            </div>
+
+            <!-- Hobbies & Interests Card -->
+            <div class="detail-card">
+                <h3>Interests & Hobbies</h3>
+                <ul>
+                    <li>🎸 Guitar</li>
+                    <li>🎤 Singing</li>
+                    <li>🎨 Traditional Art</li>
+                    <li>🎮 Gaming</li>
+                    <li>🧑‍🍳 Cooking</li>
+                    <li>💻 Coding</li>
+                </ul>
+            </div>
+
+            <div class="detail-card">
+                <h3>Skills</h3>
+                <ul>
+                    <li><strong>Programming Languages:</strong> Python, HTML, CSS</li>
+                    <li><strong>Frameworks:</strong> Flask</li>
+                    <li><strong>Databases:</strong> MySQL, SQLite</li>
+                    <li><strong>Data Structures:</strong> Linked List, Stack, Queue, Deque</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </main>
+
 </body>
 </html>
