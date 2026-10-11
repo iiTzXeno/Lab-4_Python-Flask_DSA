@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from node import Node, LinkedList, Stack, PostfixConverter, Queue, Deque
+from nodes import Node, LinkedList, Stack, PostfixConverter, Queue, Deque
 
 app = Flask(__name__)
 
