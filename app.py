@@ -14,6 +14,7 @@ def profile():
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
 @app.route('/works')
 def works():
     return render_template('works.html')
@@ -145,7 +146,11 @@ def linked_list_page():
 
 @app.route('/works/stack', methods=['GET', 'POST'])
 def stack_page():
-    message = None
+    message = "Ready"
+    single_value = None
+    print_text = None
+    print_elements = []  
+    
     if request.method == 'POST':
         action = request.form.get('action')
 
@@ -159,10 +164,38 @@ def stack_page():
 
         elif action == 'pop':
             popped = my_stack.pop()
-            message = f"Popped value: {popped}" if popped is not None else "Stack is empty."
+            if popped is not None:
+                message = "Popped value successfully."
+                single_value = popped
+            else:
+                message = "Stack is empty."
 
-    elements = my_stack.get_elements() if hasattr(my_stack, 'get_elements') else []
-    return render_template('stack.html', elements=elements, message=message)
+        elif action == 'peek':
+            top_val = my_stack.peek()
+            if top_val is not None:
+                message = "Peeked top element."
+                single_value = top_val
+            else:
+                message = "Stack is empty."
+
+        elif action == 'print':
+            current = my_stack.top
+            temp_list = []
+            while current:
+                temp_list.append(str(current.data))
+                current = current.next
+            
+            if temp_list:
+                # Text format output
+                print_text = "Stack elements (top → bottom):\n" + "\n".join(temp_list)
+                # Visual box elements
+                print_elements = temp_list
+                message = "Stack printed successfully."
+            else:
+                print_text = "Stack is empty"
+                message = "Stack is empty."
+
+    return render_template('stack.html', message=message, single_value=single_value, print_text=print_text, print_elements=print_elements)
 
 @app.route('/works/postfix', methods=['GET', 'POST'])
 def postfix_page():

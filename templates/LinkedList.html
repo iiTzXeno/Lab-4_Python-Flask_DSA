@@ -1,177 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linked List Manager</title>
     <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: sans-serif;
-            margin: 40px;
-        }
-        .top-header {
-            text-align: center;
-        }
-        nav ul {
-            list-style-type: none;
-            padding: 0;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #121212; color: #e0e0e0; font-family: sans-serif; padding: 40px; }
+        header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 50px auto; }
+        .logo { font-size: 24px; font-weight: bold; color: #ffffff; text-decoration: none; }
+        .logo span { color: #bb86fc; }
+        nav ul { list-style-type: none; display: flex; gap: 25px; }
+        nav li a { color: #e0e0e0; text-decoration: none; transition: color 0.3s ease; }
+        nav li a:hover, nav li a.active { color: #bb86fc; }
+        .talk-btn { background-color: #bb86fc; color: #121212; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
+
+        .ds-layout { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
+        .panel { background-color: #1e1e1e; border: 1px solid #333; border-radius: 16px; padding: 24px; text-align: left; }
+        .panel h2 { font-size: 20px; color: #ffffff; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        
+        .form-section { margin-bottom: 20px; }
+        .form-section h3 { font-size: 15px; color: #bb86fc; margin-bottom: 10px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; color: #aaa; font-size: 13px; margin-bottom: 4px; }
+        input[type="text"] { width: 100%; background-color: #121212; color: #fff; border: 1px solid #444; padding: 10px 14px; border-radius: 8px; font-size: 14px; outline: none; }
+        input:focus { border-color: #bb86fc; }
+        
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .btn-action { background-color: #bb86fc; color: #121212; border: none; padding: 8px 14px; border-radius: 16px; font-weight: bold; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .btn-action:hover { background-color: #a368fc; transform: translateY(-2px); }
+        .btn-secondary { background-color: #2a2a2a; color: #bb86fc; border: 1px solid #444; }
+        .btn-secondary:hover { background-color: #333; }
+
+        .visualizer-screen { background-color: #121212; border: 1px solid #333; border-radius: 10px; padding: 16px; min-height: 120px; max-height: 300px; overflow-y: auto; margin-top: 10px; }
+        .visualizer-screen p { color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
+        
+        /* Node Chain Visualizer Styling */
+        .node-chain {
             display: flex;
-            justify-content: center;
-            gap: 15px;
+            align-items: center;
             flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 10px 0;
         }
-        nav li a {
-            display: inline-block;
+        .node-badge {
             background-color: #1e1e1e;
             color: #bb86fc;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            border: 1px solid #333;
-            transition: all 0.3s ease;
-        }
-        nav li a:hover {
-            background-color: #bb86fc;
-            color: #121212;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
-        }
-        h1, h3 {
-            color: #ffffff;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 30px;
-            align-items: start;
-            margin-top: 30px;
-        }
-        .form-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        form {
-            background: #1e1e1e;
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid #333;
-        }
-        input[type="text"] {
-            background-color: #121212;
-            color: #fff;
-            border: 1px solid #444;
-            padding: 8px;
-            border-radius: 5px;
-            width: 90%;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-        button {
-            background-color: #bb86fc;
-            color: #121212;
-            border: none;
+            border: 1px solid #bb86fc;
             padding: 8px 14px;
-            border-radius: 20px;
-            cursor: pointer;
+            border-radius: 8px;
             font-weight: bold;
-            transition: all 0.3s ease;
-            margin-right: 5px;
-            margin-top: 5px;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(187, 134, 252, 0.1);
         }
-        button:hover {
-            background-color: #a368fc;
-            transform: translateY(-2px);
+        .node-arrow {
+            color: #555;
+            font-weight: bold;
+            font-size: 16px;
         }
-        a {
-            color: #bb86fc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+
+        .back-link-container { max-width: 1000px; margin: 30px auto 0 auto; text-align: left; }
+        .back-link { color: #bb86fc; text-decoration: none; font-size: 14px; }
+        .back-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <div class="top-header">
-        <h1>Linked List Operations</h1>
+    <header>
+        <a href="/" class="logo">Tristan<span>.</span></a>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/works">Works</a></li>
+                <li><a href="/profile">About</a></li>
+                <li><a href="/works" class="active">Portfolio</a></li>
                 <li><a href="/contact">Contact</a></li>
             </ul>
         </nav>
-    </div>
-    <hr>
+        <a href="/contact" class="talk-btn">Let's Talk</a>
+    </header>
 
-    <div class="grid-container">
-        
-        <div class="form-stack">
-            <form action="/works/LinkedList" method="post">
-                <h3>Basic Operations</h3>
-                <label for="basic_value">Value:</label><br>
-                <input type="text" id="basic_value" name="basic_value" placeholder="Enter value">
-                <br>
-                <button type="submit" name="action" value="insert_beginning">Insert at Beginning</button>
-                <button type="submit" name="action" value="insert_end">Insert at End</button>
-                <button type="submit" name="action" value="search">Search Value</button>
-            </form>
+    <main>
+        <div class="ds-layout">
+            <!-- Control Panel (Left Column) -->
+            <div class="panel">
+                <h2>Linked List Operations</h2>
+                
+                <!-- Basic Operations Form -->
+                <form action="/works/LinkedList" method="post" class="form-section">
+                    <h3>Basic Operations</h3>
+                    <div class="form-group">
+                        <label for="basic_value">Value:</label>
+                        <input type="text" id="basic_value" name="basic_value" placeholder="Enter value...">
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" name="action" value="insert_beginning" class="btn-action">Insert Beginning</button>
+                        <button type="submit" name="action" value="insert_end" class="btn-action">Insert End</button>
+                        <button type="submit" name="action" value="search" class="btn-action btn-secondary">Search</button>
+                    </div>
+                </form>
 
-            <form action="/works/LinkedList" method="post">
-                <h3>Insert After Node</h3>
-                <label for="target">Existing Node Value:</label><br>
-                <input type="text" id="target" name="target" placeholder="Target node">
-                <br>
-                <label for="insert_value">New Value to Insert:</label><br>
-                <input type="text" id="insert_value" name="insert_value" placeholder="New value">
-                <br>
-                <button type="submit" name="action" value="insert_after">Insert After</button>
-            </form>
+                <!-- Insert After Form -->
+                <form action="/works/LinkedList" method="post" class="form-section">
+                    <h3>Insert After Node</h3>
+                    <div class="form-group">
+                        <label for="target">Target Node Value:</label>
+                        <input type="text" id="target" name="target" placeholder="Target node...">
+                    </div>
+                    <div class="form-group">
+                        <label for="insert_value">New Value:</label>
+                        <input type="text" id="insert_value" name="insert_value" placeholder="New value...">
+                    </div>
+                    <button type="submit" name="action" value="insert_after" class="btn-action">Insert After</button>
+                </form>
+
+                <!-- Remove Specific Form -->
+                <form action="/works/LinkedList" method="post" class="form-section">
+                    <h3>Remove Specific Value</h3>
+                    <div class="form-group">
+                        <label for="remove_value">Value to Remove:</label>
+                        <input type="text" id="remove_value" name="remove_value" placeholder="Value to delete...">
+                    </div>
+                    <button type="submit" name="action" value="remove_at" class="btn-action btn-secondary">Remove At</button>
+                </form>
+
+                <!-- Quick Removals Form -->
+                <form action="/works/LinkedList" method="post" class="form-section" style="margin-bottom: 0;">
+                    <h3>Quick Removals</h3>
+                    <div class="btn-group">
+                        <button type="submit" name="action" value="remove_beginning" class="btn-action btn-secondary">Remove Beginning</button>
+                        <button type="submit" name="action" value="remove_end" class="btn-action btn-secondary">Remove End</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Output / State Panel (Right Column) -->
+            <div class="panel">
+                <h2>List State & Console</h2>
+                <div class="visualizer-screen">
+                    {% if message %}
+                        <p><strong>Status:</strong> {{ message }}</p>
+                    {% else %}
+                        <p><strong>Status:</strong> Ready</p>
+                    {% endif %}
+
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 12px 0;">
+
+                    <p><strong>Current Linked List Structure:</strong></p>
+                    <div class="node-chain">
+                        {% if elements %}
+                            {% for item in elements %}
+                                <span class="node-badge">{{ item }}</span>
+                                {% if not loop.last %}
+                                    <span class="node-arrow">&rarr;</span>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <span style="color: #777; font-size: 14px;">List is empty</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-stack">
-            <form action="/works/LinkedList" method="post">
-                <h3>Remove Specific Value</h3>
-                <label for="remove_value">Value to Remove:</label><br>
-                <input type="text" id="remove_value" name="remove_value" placeholder="Value to delete">
-                <br>
-                <button type="submit" name="action" value="remove_at">Remove At</button>
-            </form>
-
-            <form action="/works/LinkedList" method="post">
-                <h3>Quick Removals</h3>
-                <button type="submit" name="action" value="remove_beginning">Remove Beginning</button>
-                <button type="submit" name="action" value="remove_end">Remove End</button>
-            </form>
-            <br>
-            <a href="/works">Back to Works</a>
+        <div class="back-link-container">
+            <a href="/works" class="back-link">&larr; Back to Works</a>
         </div>
-
-        <div>
-            <h3>Output</h3>
-
-            {% if message %}
-            <p><strong>Status:</strong> {{ message }}</p>
-            {% else %}
-            <p><strong>Status:</strong> Ready</p>
-            {% endif %}
-
-            <hr>
-
-            <p><strong>Current Linked List:</strong></p>
-            <ul>
-                {% if elements %}
-                    {% for item in elements %}
-                        <li>{{ item }}</li>
-                    {% endfor %}
-                {% else %}
-                    <li>List is empty</li>
-                {% endif %}
-            </ul>
-        </div>
-
-    </div>
+    </main>
 </body>
 </html>

@@ -157,37 +157,35 @@ class PostfixConverter:
         self.precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
 
     def infix_to_postfix(self, expression):
-        stack = Stack()
-        output = []
-        
-        # Clean spaces
+        stack = Stack()  
+        output = []      
+
         expression = expression.replace(" ", "")
         
-        for char in expression:
-            # If operand (letter or digit), add to output
-            if char.isalnum():
-                output.append(char)
-            # If '(', push to stack
-            elif char == '(':
-                stack.push(char)
-            # If ')', pop until '(' is found
-            elif char == ')':
+        for token in expression:
+
+            if token.isalnum():
+                output.append(token)
+
+            elif token == '(':
+                stack.push(token)
+
+            elif token == ')':
                 while stack.top and stack.top.data != '(':
                     output.append(stack.pop())
                 if stack.top and stack.top.data == '(':
-                    stack.pop()
-            # If operator
-            elif char in self.precedence:
+                    stack.pop() 
+
+            elif token in self.precedence:
                 while (stack.top and stack.top.data != '(' and 
                        stack.top.data in self.precedence and 
-                       self.precedence[stack.top.data] >= self.precedence[char]):
+                       self.precedence[stack.top.data] >= self.precedence[token]):
                     output.append(stack.pop())
-                stack.push(char)
+                stack.push(token)
                 
-        # Pop remaining operators from stack
         while stack.top:
             if stack.top.data == '(':
-                stack.pop() # Remove leftover parenthesis if any
+                stack.pop()
             else:
                 output.append(stack.pop())
                 

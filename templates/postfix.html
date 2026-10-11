@@ -1,111 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>PEMDAS Postfix Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEMDAS Postfix Converter</title>
     <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: sans-serif;
-            margin: 40px;
-            text-align: center;
-        }
-        h1, h3 {
-            color: #ffffff;
-        }
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        nav li a {
-            display: inline-block;
-            background-color: #1e1e1e;
-            color: #bb86fc;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            border: 1px solid #333;
-            transition: all 0.3s ease;
-        }
-        nav li a:hover {
-            background-color: #bb86fc;
-            color: #121212;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
-        }
-        form {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #333;
-            max-width: 320px;
-            margin: 20px auto;
-            text-align: left;
-        }
-        input[type="text"] {
-            background-color: #121212;
-            color: #fff;
-            border: 1px solid #444;
-            padding: 8px;
-            border-radius: 5px;
-            width: 90%;
-            margin-top: 5px;
-            margin-bottom: 15px;
-        }
-        input[type="submit"] {
-            background-color: #bb86fc;
-            color: #121212;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        input[type="submit"]:hover {
-            background-color: #a368fc;
-            transform: translateY(-2px);
-        }
-        a {
-            color: #bb86fc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #121212; color: #e0e0e0; font-family: sans-serif; padding: 40px; }
+        header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 50px auto; }
+        .logo { font-size: 24px; font-weight: bold; color: #ffffff; text-decoration: none; }
+        .logo span { color: #bb86fc; }
+        nav ul { list-style-type: none; display: flex; gap: 25px; }
+        nav li a { color: #e0e0e0; text-decoration: none; transition: color 0.3s ease; }
+        nav li a:hover, nav li a.active { color: #bb86fc; }
+        .talk-btn { background-color: #bb86fc; color: #121212; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
+
+        .ds-layout { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
+        .panel { background-color: #1e1e1e; border: 1px solid #333; border-radius: 16px; padding: 24px; text-align: left; }
+        .panel h2 { font-size: 20px; color: #ffffff; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        
+        .form-section { margin-bottom: 20px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; color: #aaa; font-size: 13px; margin-bottom: 4px; }
+        input[type="text"] { width: 100%; background-color: #121212; color: #fff; border: 1px solid #444; padding: 10px 14px; border-radius: 8px; font-size: 14px; outline: none; }
+        input:focus { border-color: #bb86fc; }
+        
+        .btn-action { background-color: #bb86fc; color: #121212; border: none; padding: 10px 18px; border-radius: 18px; font-weight: bold; cursor: pointer; font-size: 13px; transition: all 0.2s; margin-top: 10px; }
+        .btn-action:hover { background-color: #a368fc; transform: translateY(-2px); }
+
+        .visualizer-screen { background-color: #121212; border: 1px solid #333; border-radius: 10px; padding: 16px; min-height: 120px; max-height: 300px; overflow-y: auto; margin-top: 10px; }
+        .visualizer-screen p { color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
+        
+        .error-box { color: #ff6b6b; font-size: 14px; margin-top: 10px; }
+
+        .back-link-container { max-width: 1000px; margin: 30px auto 0 auto; text-align: left; }
+        .back-link { color: #bb86fc; text-decoration: none; font-size: 14px; }
+        .back-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <h1>PEMDAS Postfix Expression Converter</h1>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/works">Works</a></li>
-            <li><a href="/contact">Contact</a></li>
-        </ul>
-    </nav>
-    <hr>
+    <header>
+        <a href="/" class="logo">Tristan<span>.</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">About</a></li>
+                <li><a href="/works" class="active">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="/contact" class="talk-btn">Let's Talk</a>
+    </header>
 
-    <form action="/works/postfix" method="post">
-        <label for="expression">Enter Infix Expression (e.g., A+B*C):</label><br>
-        <input type="text" id="expression" name="expression"><br>
-        <input type="submit" value="Convert">
-    </form>
+    <main>
+        <div class="ds-layout">
+            <div class="panel">
+                <h2>PEMDAS Postfix Converter</h2>
+                <form action="/works/postfix" method="post" class="form-section" style="margin-bottom: 0;">
+                    <div class="form-group">
+                        <label for="expression">Infix Expression (e.g., A+B*C):</label>
+                        <input type="text" id="expression" name="expression" placeholder="Enter expression..." required>
+                    </div>
+                    <button type="submit" class="btn-action">Convert Expression</button>
+                </form>
+            </div>
 
-    {% if error %}
-    <p>ValueError: {{ error }}</p>
-    {% endif %}
+            <div class="panel">
+                <h2>Conversion Output</h2>
+                <div class="visualizer-screen">
+                    {% if error %}
+                        <p class="error-box">Error: {{ error }}</p>
+                    {% elif result %}
+                        <p><strong>Postfix Result:</strong></p>
+                        <div style="background-color: #1e1e1e; border: 1px solid #bb86fc; padding: 12px; border-radius: 8px; color: #bb86fc; font-weight: bold; font-size: 16px; letter-spacing: 1px;">
+                            {{ result }}
+                        </div>
+                    {% else %}
+                        <p><strong>Status:</strong> Enter an expression to convert.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
-    {% if result %}
-    <p><strong>Postfix Result:</strong> {{ result }}</p>
-    {% endif %}
-
-    <br>
-    <a href="/works">Back to Works</a>
+        <div class="back-link-container">
+            <a href="/works" class="back-link">&larr; Back to Works</a>
+        </div>
+    </main>
 </body>
 </html>
