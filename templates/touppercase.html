@@ -27,6 +27,9 @@
         .result-box { margin-top: 24px; background-color: #121212; border: 1px solid #333; border-radius: 10px; padding: 16px; text-align: left; }
         .result-box h3 { color: #bb86fc; font-size: 14px; margin-bottom: 6px; }
         .result-box p { color: #fff; font-size: 16px; }
+        .error-box { margin-top: 24px; background-color: #121212; border: 1px solid #ff5555; border-radius: 10px; padding: 16px; text-align: left; }
+        .error-box h3 { color: #ff5555; font-size: 14px; margin-bottom: 6px; }
+        .error-box p { color: #ff5555; font-size: 16px; }
         .back-link { display: inline-block; margin-top: 20px; color: #bb86fc; text-decoration: none; font-size: 14px; }
     </style>
 </head>
@@ -53,7 +56,8 @@
         <form method="POST">
             <div class="form-group">
                 <label for="text">Enter Text:</label>
-                <input type="text" id="text" name="text" placeholder="Type something here..." required>
+                <!-- Matches inputString in app.py -->
+                <input type="text" id="text" name="inputString" placeholder="Type something here..." required>
             </div>
             <button type="submit" class="btn-submit">Convert to Uppercase</button>
         </form>
@@ -62,6 +66,13 @@
         <div class="result-box">
             <h3>Converted Result:</h3>
             <p>{{ result }}</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error-box">
+            <h3>Error:</h3>
+            <p>{{ error }}</p>
         </div>
         {% endif %}
 
