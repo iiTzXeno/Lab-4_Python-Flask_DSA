@@ -142,7 +142,7 @@ def linked_list_page():
             message = f"Removed end node: {removed}" if removed is not None else "List is already empty."
 
     elements = my_linked_list.get_elements()
-    return render_template('linkedlist.html', elements=elements, message=message)
+    return render_template('LinkedList.html', elements=elements, message=message)
 
 @app.route('/works/stack', methods=['GET', 'POST'])
 def stack_page():
