@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from nodes import Node, LinkedList, Stack, PostfixConverter, Queue, Deque
+from nodes import Node, BinaryNode, LinkedList, Stack, PostfixConverter, Queue, Deque, BinaryTree
 from sorting import BubbleSort, SelectionSort, InsertionSort #, MergeSort
 
 app = Flask(__name__)
@@ -266,6 +266,78 @@ def deque_page():
 
     elements = my_deque.get_elements() if hasattr(my_deque, 'get_elements') else []
     return render_template('deque.html', elements=elements, message=message)
+
+# For Binary Tree
+global_tree = BinaryTree()
+
+@app.route('/works/binarytree', methods=['GET', 'POST'])
+def binary_tree_page():
+    global global_tree
+    message = "Tree is currently empty. Set a root node to begin."
+    
+    if request.method == 'POST':
+        action = request.form.get('action')
+        
+        if action == 'reset':
+            global_tree = BinaryTree()
+            message = "Tree has been reset (emptied)."
+            
+        elif action == 'create_root':
+            root_val = request.form.get('root_value', '').strip()
+            if root_val:
+                global_tree = BinaryTree(root_val)
+                message = f"Root node '{root_val}' created successfully."
+            else:
+                message = "Please provide a valid root value."
+            
+        elif action == 'insert':
+            parent_val = request.form.get('parent_value', '').strip()
+            child_val = request.form.get('child_value', '').strip()
+            direction = request.form.get('direction', 'left')
+            
+            if not global_tree.root:
+                message = "Error: Tree has no root! Create a root node first."
+            elif parent_val and child_val:
+                parent_node = global_tree.search(global_tree.root, parent_val)
+                if parent_node:
+                    if direction == 'left':
+                        global_tree.insert_left(parent_node, child_val)
+                    else:
+                        global_tree.insert_right(parent_node, child_val)
+                    message = f"Inserted '{child_val}' as {direction} child of '{parent_val}'."
+                else:
+                    message = f"Parent node '{parent_val}' not found in the tree."
+            else:
+                message = "Please provide both parent and child values."
+
+        elif action == 'delete':
+            delete_val = request.form.get('delete_value', '').strip()
+            if not global_tree.root:
+                message = "Error: Tree is already empty."
+            elif delete_val:
+                if global_tree.search(global_tree.root, delete_val):
+                    global_tree.root = global_tree.delete_node(global_tree.root, delete_val)
+                    message = f"Node '{delete_val}' deleted successfully."
+                else:
+                    message = f"Node '{delete_val}' not found in the tree."
+            else:
+                message = "Please provide a value to delete."
+
+    # Compute Traversals
+    preorder = global_tree.preorder_traversal(global_tree.root, "").strip() if global_tree.root else ""
+    inorder = global_tree.inorder_traversal(global_tree.root, "").strip() if global_tree.root else ""
+    postorder = global_tree.postorder_traversal(global_tree.root, "").strip() if global_tree.root else ""
+    
+    tree_json = global_tree.to_dict(global_tree.root) if global_tree.root else None
+
+    return render_template(
+        'binary_tree.html',
+        tree_data=tree_json,
+        preorder=preorder,
+        inorder=inorder,
+        postorder=postorder,
+        message=message
+    )
 
 # For Sorting Algorithm 
 @app.route('/works/bubblesort', methods=['GET', 'POST'])

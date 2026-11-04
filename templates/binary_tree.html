@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Tree Visualizer</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #121212; color: #e0e0e0; font-family: sans-serif; padding: 40px; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 50px auto; }
+        .logo { font-size: 24px; font-weight: bold; color: #ffffff; text-decoration: none; }
+        .logo span { color: #bb86fc; }
+        nav ul { list-style-type: none; display: flex; gap: 25px; }
+        nav li a { color: #e0e0e0; text-decoration: none; transition: color 0.3s ease; }
+        nav li a:hover, nav li a.active { color: #bb86fc; }
+        .talk-btn { background-color: #bb86fc; color: #121212; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
+
+        .ds-layout { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+        .panel { background-color: #1e1e1e; border: 1px solid #333; border-radius: 16px; padding: 24px; text-align: left; }
+        .panel h2 { font-size: 20px; color: #ffffff; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        
+        .form-group { margin-bottom: 15px; background: #121212; padding: 12px; border-radius: 8px; border: 1px solid #333; }
+        label { display: block; color: #bb86fc; font-size: 13px; margin-bottom: 6px; font-weight: bold; }
+        input[type="text"], select { width: 100%; background-color: #1e1e1e; color: #fff; border: 1px solid #444; padding: 10px 14px; border-radius: 8px; font-size: 14px; outline: none; margin-bottom: 10px; }
+        input:focus, select:focus { border-color: #bb86fc; }
+        
+        .btn-action { background-color: #bb86fc; color: #121212; border: none; padding: 10px 18px; border-radius: 16px; font-weight: bold; cursor: pointer; font-size: 14px; transition: all 0.2s; width: 100%; }
+        .btn-action:hover { background-color: #a368fc; transform: translateY(-2px); }
+        .btn-secondary { background-color: #2a2a2a; color: #bb86fc; border: 1px solid #444; margin-top: 10px; }
+        .btn-secondary:hover { background-color: #333; }
+
+        /* Scrollable Visualizer Window with both horizontal & vertical scrollbars */
+        .visualizer-screen { 
+            background-color: #121212; 
+            border: 1px solid #333; 
+            border-radius: 10px; 
+            padding: 30px; 
+            height: 520px; 
+            margin-top: 10px; 
+            overflow: auto; 
+            position: relative;
+        }
+        .status-text { color: #bb86fc; font-size: 13px; margin-bottom: 15px; font-weight: bold; width: 100%; text-align: center; }
+
+        /* Tree Canvas Layout */
+        .tree-canvas {
+            display: inline-block;
+            min-width: 1000px;
+            min-height: 800px;
+            position: relative;
+        }
+        .tree-node-container { display: flex; flex-direction: column; align-items: center; margin: 10px; position: relative; }
+        .node-circle { background-color: #2a2a2a; color: #bb86fc; border: 2px solid #bb86fc; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2; position: relative; }
+        .children-container { display: flex; gap: 50px; margin-top: 45px; position: relative; }
+        
+        /* SVG Arrow Layer */
+        #tree-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .traversals-box { margin-top: 20px; background-color: #121212; border: 1px solid #333; border-radius: 8px; padding: 14px; font-size: 13px; }
+        .traversals-box p { margin-bottom: 6px; color: #aaa; }
+        .traversals-box span { color: #2ecc71; font-weight: bold; }
+
+        .back-link-container { max-width: 1200px; margin: 30px auto 0 auto; text-align: left; }
+        .back-link { color: #bb86fc; text-decoration: none; font-size: 14px; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Tristan<span>.</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">About</a></li>
+                <li><a href="/works" class="active">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="/contact" class="talk-btn">Let's Talk</a>
+    </header>
+
+    <main>
+        <div class="ds-layout">
+            <!-- Control Panel -->
+            <div class="panel">
+                <h2>Binary Tree Manager</h2>
+                
+                <!-- Root Creation Form -->
+                <form action="/works/binarytree" method="POST" class="form-group">
+                    <label>1. Initialize / Reset Root:</label>
+                    <input type="text" name="root_value" placeholder="Root Value (e.g. 1)" required>
+                    <input type="hidden" name="action" value="create_root">
+                    <button type="submit" class="btn-action">Set Root Node</button>
+                </form>
+
+                <!-- Insertion Form -->
+                <form action="/works/binarytree" method="POST" class="form-group">
+                    <label>2. Insert Child Node:</label>
+                    <input type="text" name="parent_value" placeholder="Parent Value (e.g. 12)" required>
+                    <input type="text" name="child_value" placeholder="Child Value (e.g. 14)" required>
+                    <select name="direction">
+                        <option value="left">Left Child</option>
+                        <option value="right">Right Child</option>
+                    </select>
+                    <input type="hidden" name="action" value="insert">
+                    <button type="submit" class="btn-action">Insert Child</button>
+                </form>
+
+                <!-- Delete Form -->
+                <form action="/works/binarytree" method="POST" class="form-group">
+                    <label>3. Delete Node:</label>
+                    <input type="text" name="delete_value" placeholder="Node Value to Delete" required>
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="btn-action" style="background-color: #e74c3c; color: #fff;">Delete Node</button>
+                </form>
+
+                <!-- Clear / Reset Tree -->
+                <form action="/works/binarytree" method="POST">
+                    <input type="hidden" name="action" value="reset">
+                    <button type="submit" class="btn-action btn-secondary">Clear Entire Tree</button>
+                </form>
+
+                <div class="traversals-box">
+                    <p>Preorder: <span>{{ preorder if preorder else 'Empty' }}</span></p>
+                    <p>Inorder: <span>{{ inorder if inorder else 'Empty' }}</span></p>
+                    <p>Postorder: <span>{{ postorder if postorder else 'Empty' }}</span></p>
+                </div>
+            </div>
+
+            <!-- Visualizer Panel -->
+            <div class="panel">
+                <h2>Tree Visualizer</h2>
+                <div class="visualizer-screen" id="screen-container">
+                    <div class="status-text">{{ message }}</div>
+                    <div class="tree-canvas" id="tree-canvas">
+                        <svg id="tree-svg"></svg>
+                        <div id="tree-root-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-link-container">
+            <a href="/works" class="back-link">&larr; Back to Works</a>
+        </div>
+    </main>
+
+    <script>
+        const treeData = {{ tree_data | tojson | safe }};
+
+        function renderTree(node) {
+            if (!node) return null;
+            
+            const container = document.createElement('div');
+            container.className = 'tree-node-container';
+
+            const circle = document.createElement('div');
+            circle.className = 'node-circle';
+            circle.innerText = node.value;
+            container.appendChild(circle);
+
+            if (node.left || node.right) {
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'children-container';
+
+                const leftChildDiv = document.createElement('div');
+                if (node.left) {
+                    leftChildDiv.appendChild(renderTree(node.left));
+                }
+                childrenContainer.appendChild(leftChildDiv);
+
+                const rightChildDiv = document.createElement('div');
+                if (node.right) {
+                    rightChildDiv.appendChild(renderTree(node.right));
+                }
+                childrenContainer.appendChild(rightChildDiv);
+
+                container.appendChild(childrenContainer);
+            }
+
+            return container;
+        }
+
+        // Dynamically draw SVG lines with arrowheads between parent and child circles
+        function drawConnectors(nodeElement, svg, canvasRect) {
+            if (!nodeElement) return;
+            const circle = nodeElement.querySelector(':scope > .node-circle');
+            const childrenContainer = nodeElement.querySelector(':scope > .children-container');
+
+            if (!circle || !childrenContainer) return;
+
+            const parentRect = circle.getBoundingClientRect();
+            const parentX = parentRect.left + parentRect.width / 2 - canvasRect.left;
+            const parentY = parentRect.top + parentRect.height / 2 - canvasRect.top;
+
+            const childCols = childrenContainer.children;
+            for (let childCol of childCols) {
+                const subNode = childCol.querySelector('.tree-node-container');
+                if (subNode) {
+                    const childCircle = subNode.querySelector(':scope > .node-circle');
+                    if (childCircle) {
+                        const childRect = childCircle.getBoundingClientRect();
+                        const childX = childRect.left + childRect.width / 2 - canvasRect.left;
+                        const childY = childRect.top + childRect.height / 2 - canvasRect.top;
+
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', parentX);
+                        line.setAttribute('y1', parentY);
+                        line.setAttribute('x2', childX);
+                        line.setAttribute('y2', childY);
+                        line.setAttribute('stroke', '#bb86fc');
+                        line.setAttribute('stroke-width', '2');
+                        line.setAttribute('marker-end', 'url(#arrow)');
+                        svg.appendChild(line);
+
+                        drawConnectors(subNode, svg, canvasRect);
+                    }
+                }
+            }
+        }
+
+        window.onload = function() {
+            const rootContainer = document.getElementById('tree-root-container');
+            const svg = document.getElementById('tree-svg');
+            const canvas = document.getElementById('tree-canvas');
+
+            svg.innerHTML = `
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#bb86fc"/>
+                    </marker>
+                </defs>
+            `;
+
+            if (treeData && treeData.value !== undefined) {
+                const rootElement = renderTree(treeData);
+                rootContainer.appendChild(rootElement);
+
+                setTimeout(() => {
+                    const canvasRect = canvas.getBoundingClientRect();
+                    const subNodeContainer = rootContainer.querySelector('.tree-node-container');
+                    if (subNodeContainer) {
+                        drawConnectors(subNodeContainer, svg, canvasRect);
+                    }
+                }, 50);
+            } else {
+                rootContainer.innerHTML = '<span style="color: #666; font-size: 14px; display:block; text-align:center; margin-top:40px;">Tree is empty. Set a root node using the control panel.</span>';
+            }
+        };
+    </script>
+</body>
+</html>

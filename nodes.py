@@ -289,3 +289,110 @@ class Deque:
             elements.append(current.data)
             current = current.next
         return elements
+    
+# Non-Linear Data Structures
+
+# For binary tree
+class BinaryNode:
+    """A node in a binary tree."""
+    def __init__(self, value, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+
+class BinaryTree:
+    """A binary tree data structure."""
+    def __init__(self, root_value=None):
+        self.root = BinaryNode(root_value) if root_value is not None else None
+
+    def insert_left(self, current_node, value):
+        """Insert a node as the left child of the current node."""
+        if current_node.left is None:
+            current_node.left = BinaryNode(value)
+        else:
+            new_node = BinaryNode(value)
+            new_node.left = current_node.left
+            current_node.left = new_node
+
+    def insert_right(self, current_node, value):
+        """Insert a node as the right child of the current node."""
+        if current_node.right is None:
+            current_node.right = BinaryNode(value)
+        else:
+            new_node = BinaryNode(value)
+            new_node.right = current_node.right
+            current_node.right = new_node
+
+    def find_min(self, node):
+        """Find the minimum value node in a subtree."""
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def delete_node(self, root, key):
+        if root is None:
+            return None
+
+        if str(root.value) == str(key):
+            if root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+
+            temp = self.find_min(root.right)
+            root.value = temp.value
+            root.right = self.delete_node(root.right, temp.value)
+        else:
+            root.left = self.delete_node(root.left, key)
+            root.right = self.delete_node(root.right, key)
+
+        return root
+
+    def search(self, root, key):
+        """General binary tree search checking both branches."""
+        if root is None:
+            return None
+        if str(root.value) == str(key):
+            return root
+
+        found_left = self.search(root.left, key)
+        if found_left is not None:
+            return found_left
+
+        return self.search(root.right, key)
+    
+    def preorder_traversal(self, start, traversal=""):
+        """Traverse the tree in preorder (root, left, right)."""
+        if start:
+            traversal += (str(start.value) + " ")
+            traversal = self.preorder_traversal(start.left, traversal)
+            traversal = self.preorder_traversal(start.right, traversal)
+        return traversal    
+
+    def inorder_traversal(self, start, traversal=""):
+        """Traverse the tree in inorder (left, root, right)."""
+        if start:
+            traversal = self.inorder_traversal(start.left, traversal)
+            traversal += (str(start.value) + " ")
+            traversal = self.inorder_traversal(start.right, traversal)
+        return traversal    
+
+    def postorder_traversal(self, start, traversal=""):
+        """Traverse the tree in postorder (left, right, root)."""
+        if start:
+            traversal = self.postorder_traversal(start.left, traversal)
+            traversal = self.postorder_traversal(start.right, traversal)
+            traversal += (str(start.value) + " ")
+        return traversal 
+
+    def to_dict(self, node):
+        """Serialize tree nodes recursively into a dictionary for frontend rendering."""
+        if node is None:
+            return None
+        return {
+            "value": node.value,
+            "left": self.to_dict(node.left),
+            "right": self.to_dict(node.right)
+        }
