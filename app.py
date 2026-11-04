@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from nodes import Node, LinkedList, Stack, PostfixConverter, Queue, Deque
+from sorting import BubbleSort, SelectionSort, InsertionSort #, MergeSort
 
 app = Flask(__name__)
 
@@ -265,6 +266,80 @@ def deque_page():
 
     elements = my_deque.get_elements() if hasattr(my_deque, 'get_elements') else []
     return render_template('deque.html', elements=elements, message=message)
+
+# For Sorting Algorithm 
+@app.route('/works/bubblesort', methods=['GET', 'POST'])
+def bubble_sort_page():
+    steps_json = []
+    sorted_result = []
+    user_input = ""
+    
+    if request.method == 'POST':
+        user_input = request.form.get('input_data', '').strip()
+        if user_input:
+            # Split input string by commas or spaces (e.g., "5, 2, 9, 1" or "banana, apple, cherry")
+            if ',' in user_input:
+                raw_list = user_input.split(',')
+            else:
+                raw_list = user_input.split()
+                
+            sorter = BubbleSort(raw_list)
+            sorted_result, steps_json = sorter.sort_with_steps()
+            
+    return render_template(
+        'bubble_sort.html', 
+        steps=steps_json, 
+        sorted_result=sorted_result, 
+        user_input=user_input
+    )
+
+@app.route('/works/selectionsort', methods=['GET', 'POST'])
+def selection_sort_page():
+    steps_json = []
+    sorted_result = []
+    user_input = ""
+    
+    if request.method == 'POST':
+        user_input = request.form.get('input_data', '').strip()
+        if user_input:
+            if ',' in user_input:
+                raw_list = user_input.split(',')
+            else:
+                raw_list = user_input.split()
+                
+            sort_obj = SelectionSort(raw_list)
+            sorted_result, steps_json = sort_obj.sort_with_steps()
+            
+    return render_template(
+        'selection_sort.html', 
+        steps=steps_json, 
+        sorted_result=sorted_result, 
+        user_input=user_input
+    )
+
+@app.route('/works/insertionsort', methods=['GET', 'POST'])
+def insertion_sort_page():
+    steps_json = []
+    sorted_result = []
+    user_input = ""
+    
+    if request.method == 'POST':
+        user_input = request.form.get('input_data', '').strip()
+        if user_input:
+            if ',' in user_input:
+                raw_list = user_input.split(',')
+            else:
+                raw_list = user_input.split()
+                
+            sort_obj = InsertionSort(raw_list)
+            sorted_result, steps_json = sort_obj.sort_with_steps()
+            
+    return render_template(
+        'insertion_sort.html', 
+        steps=steps_json, 
+        sorted_result=sorted_result, 
+        user_input=user_input
+    )
 
 
 if __name__ == "__main__":

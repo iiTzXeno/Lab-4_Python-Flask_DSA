@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Sort Visualizer</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #121212; color: #e0e0e0; font-family: sans-serif; padding: 40px; }
+        
+        /* Portfolio Header */
+        header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 50px auto; }
+        .logo { font-size: 24px; font-weight: bold; color: #ffffff; text-decoration: none; }
+        .logo span { color: #bb86fc; }
+        nav ul { list-style-type: none; display: flex; gap: 25px; }
+        nav li a { color: #e0e0e0; text-decoration: none; transition: color 0.3s ease; }
+        nav li a:hover, nav li a.active { color: #bb86fc; }
+        .talk-btn { background-color: #bb86fc; color: #121212; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
+
+        .ds-layout { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; align-items: start; }
+        .panel { background-color: #1e1e1e; border: 1px solid #333; border-radius: 16px; padding: 24px; text-align: left; }
+        .panel h2 { font-size: 20px; color: #ffffff; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; color: #aaa; font-size: 13px; margin-bottom: 5px; }
+        input[type="text"] { width: 100%; background-color: #121212; color: #fff; border: 1px solid #444; padding: 10px 14px; border-radius: 8px; font-size: 14px; outline: none; }
+        input:focus { border-color: #bb86fc; }
+        
+        .btn-action { background-color: #bb86fc; color: #121212; border: none; padding: 10px 18px; border-radius: 16px; font-weight: bold; cursor: pointer; font-size: 14px; transition: all 0.2s; width: 100%; }
+        .btn-action:hover { background-color: #a368fc; transform: translateY(-2px); }
+
+        .visualizer-screen { background-color: #121212; border: 1px solid #333; border-radius: 10px; padding: 20px; min-height: 220px; margin-top: 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .status-text { color: #bb86fc; font-size: 14px; margin-bottom: 15px; font-weight: bold; min-height: 40px; }
+
+        /* Array Container */
+        .array-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+            min-height: 110px;
+        }
+
+        /* True Bunny Hop Over Arc (Starts on right +65px, arcs up & over to left 0px) */
+        @keyframes bunnyHopOver {
+            0%   { transform: translate(65px, 0) scale(1); }
+            40%  { transform: translate(32px, -65px) scale(1.15); } /* Peak of the hop high in the air */
+            80%  { transform: translate(2px, -15px) scale(1.05); }  /* Landing approach */
+            100% { transform: translate(0, 0) scale(1); }          /* Landed safely in final slot */
+        }
+
+        /* Larger element sliding smoothly from left to right (-65px to 0px) */
+        @keyframes slideToRight {
+            0%   { transform: translate(-65px, 0) scale(1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .sort-box {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            min-width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            position: relative;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        
+        /* States */
+        .sort-box.comparing {
+            background-color: #f39c12;
+            color: #121212;
+            border-color: #f39c12;
+        }
+        
+        .sort-box.hopping {
+            background-color: #e74c3c;
+            color: #fff;
+            border-color: #e74c3c;
+            animation: bunnyHopOver 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            z-index: 20;
+        }
+
+        .sort-box.sliding {
+            background-color: #3498db;
+            color: #fff;
+            border-color: #3498db;
+            animation: slideToRight 0.65s ease forwards;
+            z-index: 10;
+        }
+        
+        .sort-box.sorted {
+            background-color: #2ecc71;
+            color: #121212;
+            border-color: #2ecc71;
+        }
+
+        .controls { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-control { background-color: #2a2a2a; color: #bb86fc; border: 1px solid #444; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; }
+        .btn-control:hover { background-color: #333; }
+
+        .back-link-container { max-width: 1000px; margin: 30px auto 0 auto; text-align: left; }
+        .back-link { color: #bb86fc; text-decoration: none; font-size: 14px; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Tristan<span>.</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">About</a></li>
+                <li><a href="/works" class="active">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="/contact" class="talk-btn">Let's Talk</a>
+    </header>
+
+    <main>
+        <div class="ds-layout">
+            <!-- Control Panel -->
+            <div class="panel">
+                <h2>Bubble Sort Tool</h2>
+                <form action="/works/bubblesort" method="post" class="form-section">
+                    <div class="form-group">
+                        <label for="input_data">Enter Numbers or Letters (separated by commas or spaces):</label>
+                        <input type="text" id="input_data" name="input_data" value="{{ user_input }}" placeholder="e.g. 9, 2 or 34, 12, 5" required>
+                    </div>
+                    <button type="submit" class="btn-action">Start Sorting</button>
+                </form>
+
+                {% if sorted_result %}
+                <div style="margin-top: 20px;">
+                    <p style="font-size: 13px; color: #888;">Final Result:</p>
+                    <p style="color: #2ecc71; font-weight: bold; font-size: 15px; margin-top: 4px;">{{ sorted_result | join(', ') }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Visualizer Panel -->
+            <div class="panel">
+                <h2>Sorting Animation</h2>
+                <div class="visualizer-screen">
+                    <div id="status-message" class="status-text">
+                        {% if steps %} Click Play to start sorting animation. {% else %} Enter data and click Start Sorting. {% endif %}
+                    </div>
+
+                    <div id="array-visualizer" class="array-container">
+                        <span style="color: #666; font-size: 14px;">Waiting for input...</span>
+                    </div>
+
+                    {% if steps %}
+                    <div class="controls">
+                        <button type="button" class="btn-control" onclick="playAnimation()">Play Animation</button>
+                        <button type="button" class="btn-control" onclick="resetAnimation()">Reset</button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="back-link-container">
+            <a href="/works" class="back-link">&larr; Back to Works</a>
+        </div>
+    </main>
+
+    <script>
+        const sortingSteps = {{ steps | tojson | safe }};
+        let currentStepIndex = 0;
+        let animationTimer = null;
+
+        const visualizer = document.getElementById('array-visualizer');
+        const statusMsg = document.getElementById('status-message');
+
+        function renderStep(index) {
+            if (!sortingSteps || sortingSteps.length === 0) return;
+            const step = sortingSteps[index];
+            
+            statusMsg.innerText = step.message;
+            visualizer.innerHTML = '';
+
+            step.array.forEach((val, idx) => {
+                const box = document.createElement('div');
+                box.className = 'sort-box';
+                box.innerText = val;
+
+                if (step.comparing.includes(idx)) {
+                    if (step.swapped) {
+                        const firstIdx = step.comparing[0];
+                        const secondIdx = step.comparing[1];
+                        
+                        let val1 = isNaN(step.array[firstIdx]) ? step.array[firstIdx] : Number(step.array[firstIdx]);
+                        let val2 = isNaN(step.array[secondIdx]) ? step.array[secondIdx] : Number(step.array[secondIdx]);
+                        
+                        let lesserIdx = (val1 < val2) ? firstIdx : secondIdx;
+
+                        if (idx === lesserIdx) {
+                            box.classList.add('hopping'); // The smaller element does a true bunny-hop arc over to the left!
+                        } else {
+                            box.classList.add('sliding'); // The larger element shifts smoothly to the right
+                        }
+                    } else {
+                        box.classList.add('comparing');
+                    }
+                }
+
+                if (index === sortingSteps.length - 1) {
+                    box.classList.add('sorted');
+                }
+
+                visualizer.appendChild(box);
+            });
+        }
+
+        function playAnimation() {
+            if (!sortingSteps || sortingSteps.length === 0) return;
+            clearInterval(animationTimer);
+            currentStepIndex = 0;
+
+            animationTimer = setInterval(() => {
+                if (currentStepIndex < sortingSteps.length) {
+                    renderStep(currentStepIndex);
+                    currentStepIndex++;
+                } else {
+                    clearInterval(animationTimer);
+                }
+            }, 900); 
+        }
+
+        function resetAnimation() {
+            clearInterval(animationTimer);
+            currentStepIndex = 0;
+            if (sortingSteps && sortingSteps.length > 0) {
+                renderStep(0);
+                statusMsg.innerText = "Animation reset. Click Play to start.";
+            }
+        }
+
+        window.onload = function() {
+            if (sortingSteps && sortingSteps.length > 0) {
+                renderStep(0);
+            }
+        };
+    </script>
+</body>
+</html>
