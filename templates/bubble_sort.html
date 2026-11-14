@@ -6,109 +6,370 @@
     <title>Bubble Sort Visualizer</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #121212; color: #e0e0e0; font-family: sans-serif; padding: 40px; }
-        
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 40px;
+        }
+
         /* Portfolio Header */
-        header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 50px auto; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1150px;
+            margin: 0 auto 50px auto;
+        }
         .logo { font-size: 24px; font-weight: bold; color: #ffffff; text-decoration: none; }
         .logo span { color: #bb86fc; }
         nav ul { list-style-type: none; display: flex; gap: 25px; }
         nav li a { color: #e0e0e0; text-decoration: none; transition: color 0.3s ease; }
         nav li a:hover, nav li a.active { color: #bb86fc; }
-        .talk-btn { background-color: #bb86fc; color: #121212; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
+        .talk-btn {
+            background-color: #bb86fc;
+            color: #121212;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .talk-btn:hover { background-color: #a368fc; }
 
-        .ds-layout { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; align-items: start; }
-        .panel { background-color: #1e1e1e; border: 1px solid #333; border-radius: 16px; padding: 24px; text-align: left; }
-        .panel h2 { font-size: 20px; color: #ffffff; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        
-        .form-group { margin-bottom: 15px; }
-        label { display: block; color: #aaa; font-size: 13px; margin-bottom: 5px; }
-        input[type="text"] { width: 100%; background-color: #121212; color: #fff; border: 1px solid #444; padding: 10px 14px; border-radius: 8px; font-size: 14px; outline: none; }
-        input:focus { border-color: #bb86fc; }
-        
-        .btn-action { background-color: #bb86fc; color: #121212; border: none; padding: 10px 18px; border-radius: 16px; font-weight: bold; cursor: pointer; font-size: 14px; transition: all 0.2s; width: 100%; }
-        .btn-action:hover { background-color: #a368fc; transform: translateY(-2px); }
+        /* Main Two-Column Layout */
+        .ds-layout {
+            max-width: 1150px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        .panel {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: left;
+            min-width: 0;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 12px;
+        }
+        .panel-header h2 { font-size: 20px; color: #ffffff; margin: 0; }
+        .step-badge {
+            background-color: #2a2a2a;
+            color: #bb86fc;
+            border: 1px solid #3d3d3d;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
 
-        .visualizer-screen { background-color: #121212; border: 1px solid #333; border-radius: 10px; padding: 20px; min-height: 220px; margin-top: 10px; display: flex; flex-direction: column; justify-content: space-between; }
-        .status-text { color: #bb86fc; font-size: 14px; margin-bottom: 15px; font-weight: bold; min-height: 40px; }
+        /* Form & Preset Chips */
+        .form-group { margin-bottom: 14px; }
+        label { display: block; color: #aaa; font-size: 13px; margin-bottom: 6px; }
+        input[type="text"] {
+            width: 100%;
+            background-color: #121212;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        input[type="text"]:focus { border-color: #bb86fc; }
 
-        /* Array Container */
-        .array-container {
+        .preset-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .preset-chip {
+            background-color: #262626;
+            color: #ccc;
+            border: 1px solid #3c3c3c;
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .preset-chip:hover {
+            border-color: #bb86fc;
+            color: #bb86fc;
+            background-color: #2d2538;
+        }
+
+        .btn-action {
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .btn-action:hover { background-color: #a368fc; transform: translateY(-1px); }
+
+        .result-card {
+            margin-top: 20px;
+            background-color: #121212;
+            border: 1px solid #2e2e2e;
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+        .result-card p:first-child { font-size: 12px; color: #888; margin-bottom: 4px; }
+        .result-card p:last-child { color: #2ecc71; font-weight: bold; font-size: 15px; word-break: break-word; }
+
+        /* Visualizer Screen */
+        .visualizer-screen {
+            background-color: #121212;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 410px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .status-banner {
+            background-color: #191919;
+            border-left: 3px solid #bb86fc;
+            padding: 10px 14px;
+            border-radius: 6px;
+            color: #e6d6ff;
+            font-size: 13.5px;
+            font-weight: 600;
+            min-height: 42px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
             flex-wrap: wrap;
-            margin: 40px 0;
-            min-height: 110px;
+            gap: 14px;
+            font-size: 11.5px;
+            color: #aaa;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #242424;
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+        /* Scrollable Stage for Large Datasets */
+        .canvas-scroll-area {
+            width: 100%;
+            max-height: 360px;
+            overflow: auto;
+            padding: 16px 12px 12px 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            background: radial-gradient(circle at top, #18181f 0%, #121212 75%);
+        }
+        .canvas-scroll-area::-webkit-scrollbar { width: 8px; height: 8px; }
+        .canvas-scroll-area::-webkit-scrollbar-track { background: #161616; border-radius: 4px; }
+        .canvas-scroll-area::-webkit-scrollbar-thumb { background: #383838; border-radius: 4px; }
+        .canvas-scroll-area::-webkit-scrollbar-thumb:hover { background: #bb86fc; }
+
+        /* Array Stage */
+        .array-container {
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 12px;
+            min-width: 100%;
+            padding-top: 76px;
+            padding-bottom: 6px;
+            min-height: 265px;
         }
 
-        /* True Bunny Hop Over Arc (Starts on right +65px, arcs up & over to left 0px) */
-        @keyframes bunnyHopOver {
-            0%   { transform: translate(65px, 0) scale(1); }
-            40%  { transform: translate(32px, -65px) scale(1.15); } /* Peak of the hop high in the air */
-            80%  { transform: translate(2px, -15px) scale(1.05); }  /* Landing approach */
-            100% { transform: translate(0, 0) scale(1); }          /* Landed safely in final slot */
+        /* Individual Bar Column (Bar + Status Indicator + Slot Index) */
+        .bar-slot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            position: relative;
         }
 
-        /* Larger element sliding smoothly from left to right (-65px to 0px) */
-        @keyframes slideToRight {
-            0%   { transform: translate(-65px, 0) scale(1); }
-            100% { transform: translate(0, 0) scale(1); }
-        }
-
+        /* Proportional Rectangles */
         .sort-box {
             background-color: #1e1e1e;
             color: #e0e0e0;
-            border: 1px solid #444;
-            min-width: 50px;
-            height: 50px;
+            border: 1.5px solid #444;
+            width: 48px;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            border-radius: 8px;
+            padding-bottom: 10px;
+            border-radius: 7px 7px 4px 4px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             position: relative;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
+            will-change: transform;
+            transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
         }
-        
-        /* States */
-        .sort-box.comparing {
+
+        /* Status Bar & Index Label */
+        .range-bar {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 6px;
+            background-color: transparent;
+            transition: background-color 0.25s ease;
+        }
+        .range-bar.in-compare { background-color: #f39c12; }
+        .range-bar.in-swap { background-color: #e74c3c; }
+        .range-bar.in-sorted { background-color: #2ecc71; }
+
+        .slot-index {
+            font-size: 10.5px;
+            color: #666;
+            margin-top: 4px;
+            font-family: monospace;
+        }
+
+        /* Phase 1: Comparison Highlights */
+        .sort-box.highlight-shift {
             background-color: #f39c12;
             color: #121212;
-            border-color: #f39c12;
+            border-color: #ffe082;
+            transform: translateY(-6px) scale(1.04);
+            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.35);
+            z-index: 15;
         }
-        
+
+        .sort-box.highlight-key {
+            background-color: #e74c3c;
+            color: #ffffff;
+            border-color: #ff8a80;
+            transform: translateY(-6px) scale(1.04);
+            box-shadow: 0 6px 16px rgba(231, 76, 60, 0.35);
+            z-index: 15;
+        }
+
+        /* Phase 2: Active Hopping & Sliding */
         .sort-box.hopping {
             background-color: #e74c3c;
-            color: #fff;
-            border-color: #e74c3c;
-            animation: bunnyHopOver 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            z-index: 20;
+            color: #ffffff;
+            border-color: #ff8a80;
+            box-shadow: 0 10px 22px rgba(231, 76, 60, 0.45);
+            z-index: 25;
         }
 
         .sort-box.sliding {
-            background-color: #3498db;
-            color: #fff;
-            border-color: #3498db;
-            animation: slideToRight 0.65s ease forwards;
+            background-color: #f39c12;
+            color: #121212;
+            border-color: #ffe082;
+            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.35);
             z-index: 10;
         }
-        
-        .sort-box.sorted {
+
+        /* Sorted State */
+        .sort-box.fully-sorted {
             background-color: #2ecc71;
             color: #121212;
             border-color: #2ecc71;
+            transform: translateY(0);
         }
 
-        .controls { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-control { background-color: #2a2a2a; color: #bb86fc; border: 1px solid #444; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; }
-        .btn-control:hover { background-color: #333; }
+        /* Progress Bar */
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background-color: #262626;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            margin: 10px 0 14px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f39c12, #e74c3c, #2ecc71);
+            transition: width 0.25s ease;
+        }
 
-        .back-link-container { max-width: 1000px; margin: 30px auto 0 auto; text-align: left; }
+        /* Playback Controls Bar */
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-control {
+            background-color: #262626;
+            color: #e0e0e0;
+            border: 1px solid #3f3f3f;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        .btn-control:hover:not(:disabled) {
+            background-color: #333;
+            border-color: #bb86fc;
+            color: #bb86fc;
+        }
+        .btn-control:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .btn-primary-ctrl {
+            background-color: #bb86fc;
+            color: #121212;
+            border-color: #bb86fc;
+            min-width: 115px;
+        }
+        .btn-primary-ctrl:hover:not(:disabled) {
+            background-color: #a368fc;
+            color: #121212;
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+            font-size: 12px;
+            color: #aaa;
+        }
+        .speed-control input[type="range"] {
+            width: 90px;
+            accent-color: #bb86fc;
+            cursor: pointer;
+        }
+
+        .back-link-container { max-width: 1150px; margin: 30px auto 0 auto; text-align: left; }
         .back-link { color: #bb86fc; text-decoration: none; font-size: 14px; }
         .back-link:hover { text-decoration: underline; }
+
+        @media (max-width: 850px) {
+            body { padding: 20px; }
+            .ds-layout { grid-template-columns: 1fr; }
+            .speed-control { margin-left: 0; width: 100%; justify-content: flex-end; }
+        }
     </style>
 </head>
 <body>
@@ -129,39 +390,90 @@
         <div class="ds-layout">
             <!-- Control Panel -->
             <div class="panel">
-                <h2>Bubble Sort Tool</h2>
-                <form action="/works/bubblesort" method="post" class="form-section">
+                <div class="panel-header">
+                    <h2>Bubble Sort Tool</h2>
+                </div>
+
+                <form action="/works/bubblesort" method="post" id="sort-form">
                     <div class="form-group">
-                        <label for="input_data">Enter Numbers or Letters (separated by commas or spaces):</label>
-                        <input type="text" id="input_data" name="input_data" value="{{ user_input }}" placeholder="e.g. 9, 2 or 34, 12, 5" required>
+                        <label for="input_data">Numbers or Letters (comma or space separated):</label>
+                        <input
+                            type="text"
+                            id="input_data"
+                            name="input_data"
+                            value="{{ user_input }}"
+                            placeholder="e.g. 5, 2, 9, 1, 7 or d, a, c, b"
+                            required
+                        >
                     </div>
+
+                    <div class="preset-row">
+                        <button type="button" class="preset-chip" onclick="loadPreset('numbers')">Random Numbers</button>
+                        <button type="button" class="preset-chip" onclick="loadPreset('reverse')">Reversed</button>
+                        <button type="button" class="preset-chip" onclick="loadPreset('letters')">Alphabets</button>
+                    </div>
+
                     <button type="submit" class="btn-action">Start Sorting</button>
                 </form>
 
                 {% if sorted_result %}
-                <div style="margin-top: 20px;">
-                    <p style="font-size: 13px; color: #888;">Final Result:</p>
-                    <p style="color: #2ecc71; font-weight: bold; font-size: 15px; margin-top: 4px;">{{ sorted_result | join(', ') }}</p>
+                <div class="result-card">
+                    <p>Final Sorted Result</p>
+                    <p>{{ sorted_result | join(', ') }}</p>
                 </div>
                 {% endif %}
             </div>
 
             <!-- Visualizer Panel -->
             <div class="panel">
-                <h2>Sorting Animation</h2>
+                <div class="panel-header">
+                    <h2>Adjacent Swap Animation</h2>
+                    {% if steps %}
+                    <span class="step-badge" id="step-counter">Step 1 / {{ steps | length }}</span>
+                    {% endif %}
+                </div>
+
                 <div class="visualizer-screen">
-                    <div id="status-message" class="status-text">
-                        {% if steps %} Click Play to start sorting animation. {% else %} Enter data and click Start Sorting. {% endif %}
+                    <div>
+                        <div id="status-message" class="status-banner">
+                            {% if steps %}
+                                Click Play or use Step controls to inspect Bubble Sort.
+                            {% else %}
+                                Enter numbers or letters and click Start Sorting.
+                            {% endif %}
+                        </div>
+
+                        <div class="legend">
+                            <span class="legend-item"><span class="legend-dot" style="background:#f39c12;"></span>Left / Sliding Right</span>
+                            <span class="legend-item"><span class="legend-dot" style="background:#e74c3c;"></span>Right / Hopping Left</span>
+                            <span class="legend-item"><span class="legend-dot" style="background:#2ecc71;"></span>Sorted</span>
+                        </div>
                     </div>
 
-                    <div id="array-visualizer" class="array-container">
-                        <span style="color: #666; font-size: 14px;">Waiting for input...</span>
+                    <div class="canvas-scroll-area" id="scroll-area">
+                        <div id="array-visualizer" class="array-container">
+                            <span style="color: #666; font-size: 14px; align-self: center;">Waiting for input...</span>
+                        </div>
                     </div>
 
                     {% if steps %}
-                    <div class="controls">
-                        <button type="button" class="btn-control" onclick="playAnimation()">Play Animation</button>
-                        <button type="button" class="btn-control" onclick="resetAnimation()">Reset</button>
+                    <div>
+                        <div class="progress-track" id="progress-track" title="Click to jump to step">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+
+                        <div class="controls-bar">
+                            <button type="button" class="btn-control btn-primary-ctrl" id="btn-play-pause" onclick="togglePlay()">Play</button>
+                            <button type="button" class="btn-control" id="btn-prev" onclick="stepBackward()" title="Previous Step">&#9664;</button>
+                            <button type="button" class="btn-control" id="btn-next" onclick="stepForward()" title="Next Step">&#9654;</button>
+                            <button type="button" class="btn-control" onclick="resetAnimation()">Reset</button>
+
+                            <div class="speed-control">
+                                <label for="speed-slider" style="margin:0;">Speed:</label>
+                                <input type="range" id="speed-slider" min="0.5" max="2.5" step="0.25" value="1" oninput="updateSpeed(this.value)">
+                                <span id="speed-label">1.0x</span>
+                            </div>
+                        </div>
                     </div>
                     {% endif %}
                 </div>
@@ -177,77 +489,286 @@
         const sortingSteps = {{ steps | tojson | safe }};
         let currentStepIndex = 0;
         let animationTimer = null;
+        let isPlaying = false;
+        let playbackSpeed = 1.0;
 
         const visualizer = document.getElementById('array-visualizer');
+        const scrollArea = document.getElementById('scroll-area');
         const statusMsg = document.getElementById('status-message');
+        const stepCounter = document.getElementById('step-counter');
+        const progressFill = document.getElementById('progress-fill');
+        const progressTrack = document.getElementById('progress-track');
+        const btnPlayPause = document.getElementById('btn-play-pause');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
 
-        function renderStep(index) {
+        function loadPreset(type) {
+            const input = document.getElementById('input_data');
+            if (type === 'numbers') {
+                const nums = Array.from({ length: 8 }, () => Math.floor(Math.random() * 90) + 10);
+                input.value = nums.join(', ');
+            } else if (type === 'reverse') {
+                input.value = '85, 70, 58, 44, 31, 22, 14, 5';
+            } else if (type === 'letters') {
+                input.value = 'G, B, F, A, E, D, C';
+            }
+        }
+
+        function getComparableValue(val) {
+            const num = parseFloat(val);
+            if (!isNaN(num) && isFinite(val)) {
+                return num;
+            }
+            const str = String(val).toLowerCase().trim();
+            if (str.length === 0) return 0;
+            let score = 0;
+            for (let i = 0; i < Math.min(str.length, 4); i++) {
+                score += str.charCodeAt(i) / Math.pow(256, i);
+            }
+            return score;
+        }
+
+        function extractPairIndices(step) {
+            const pairs = [
+                [step.shift_idx, step.key_idx],
+                [step.idx1, step.idx2],
+                [step.left_idx, step.right_idx],
+                [step.j, step.j !== undefined ? step.j + 1 : undefined],
+                Array.isArray(step.swapping) ? step.swapping : null,
+                Array.isArray(step.swap_indices) ? step.swap_indices : null,
+                Array.isArray(step.comparing) ? step.comparing : null,
+                Array.isArray(step.compare_indices) ? step.compare_indices : null,
+                Array.isArray(step.active_indices) ? step.active_indices : null
+            ];
+            for (const pair of pairs) {
+                if (pair && pair[0] !== undefined && pair[1] !== undefined && pair[0] !== pair[1]) {
+                    return [Math.min(pair[0], pair[1]), Math.max(pair[0], pair[1])];
+                }
+            }
+            return [undefined, undefined];
+        }
+
+        function getStepDuration() {
+            return Math.round(980 / playbackSpeed);
+        }
+
+        function updateSpeed(val) {
+            playbackSpeed = parseFloat(val);
+            document.getElementById('speed-label').innerText = `${playbackSpeed.toFixed(1)}x`;
+            if (isPlaying) {
+                clearInterval(animationTimer);
+                startTimer();
+            }
+        }
+
+        function updateControlsUI() {
+            if (!sortingSteps || sortingSteps.length === 0) return;
+            const total = sortingSteps.length;
+            if (stepCounter) {
+                stepCounter.innerText = `Step ${currentStepIndex + 1} / ${total}`;
+            }
+            if (progressFill) {
+                const pct = total > 1 ? (currentStepIndex / (total - 1)) * 100 : 100;
+                progressFill.style.width = `${pct}%`;
+            }
+            if (btnPrev) btnPrev.disabled = currentStepIndex <= 0;
+            if (btnNext) btnNext.disabled = currentStepIndex >= total - 1;
+            if (btnPlayPause) {
+                if (isPlaying) {
+                    btnPlayPause.innerText = 'Pause';
+                } else if (currentStepIndex >= total - 1) {
+                    btnPlayPause.innerText = 'Replay';
+                } else {
+                    btnPlayPause.innerText = 'Play';
+                }
+            }
+        }
+
+        function renderStep(index, animateTransition = true) {
             if (!sortingSteps || sortingSteps.length === 0) return;
             const step = sortingSteps[index];
-            
-            statusMsg.innerText = step.message;
+
+            statusMsg.innerText = step.message || '';
             visualizer.innerHTML = '';
 
+            const compVals = step.array.map(getComparableValue);
+            const maxVal = compVals.length > 0 ? Math.max(...compVals) : 10;
+            const minVal = compVals.length > 0 ? Math.min(...compVals) : 0;
+            const range = maxVal - minVal;
+
+            const [leftIdx, rightIdx] = extractPairIndices(step);
+            const phase = String(step.phase || step.action || step.type || step.status || '').toLowerCase();
+
+            const isAnimate = (
+                phase === 'animate' ||
+                phase === 'swap' ||
+                phase === 'swapped' ||
+                step.swapped === true ||
+                Array.isArray(step.swapping) ||
+                Array.isArray(step.swap_indices)
+            );
+
+            const isHighlight = !isAnimate && (
+                phase === 'highlight' ||
+                phase === 'compare' ||
+                phase === 'comparing' ||
+                leftIdx !== undefined
+            );
+
+            let focusSlot = null;
+            const slotWidth = 60; // 48px bar + 12px gap
+
             step.array.forEach((val, idx) => {
+                const slot = document.createElement('div');
+                slot.className = 'bar-slot';
+
                 const box = document.createElement('div');
                 box.className = 'sort-box';
                 box.innerText = val;
 
-                if (step.comparing.includes(idx)) {
-                    if (step.swapped) {
-                        const firstIdx = step.comparing[0];
-                        const secondIdx = step.comparing[1];
-                        
-                        let val1 = isNaN(step.array[firstIdx]) ? step.array[firstIdx] : Number(step.array[firstIdx]);
-                        let val2 = isNaN(step.array[secondIdx]) ? step.array[secondIdx] : Number(step.array[secondIdx]);
-                        
-                        let lesserIdx = (val1 < val2) ? firstIdx : secondIdx;
+                const currentComp = getComparableValue(val);
+                const barHeight = range === 0 ? 95 : 46 + ((currentComp - minVal) / range) * 134;
+                box.style.height = `${barHeight}px`;
 
-                        if (idx === lesserIdx) {
-                            box.classList.add('hopping'); // The smaller element does a true bunny-hop arc over to the left!
-                        } else {
-                            box.classList.add('sliding'); // The larger element shifts smoothly to the right
+                const rangeBar = document.createElement('div');
+                rangeBar.className = 'range-bar';
+
+                const indexLabel = document.createElement('div');
+                indexLabel.className = 'slot-index';
+                indexLabel.innerText = idx;
+
+                const isDone = (
+                    phase === 'done' ||
+                    index === sortingSteps.length - 1 ||
+                    (Array.isArray(step.sorted_indices) && step.sorted_indices.includes(idx))
+                );
+
+                if (isDone) {
+                    box.classList.add('fully-sorted');
+                    rangeBar.classList.add('in-sorted');
+                } else if (isHighlight) {
+                    if (idx === rightIdx) {
+                        box.classList.add('highlight-key');
+                        rangeBar.classList.add('in-compare');
+                        focusSlot = slot;
+                    } else if (idx === leftIdx) {
+                        box.classList.add('highlight-shift');
+                        rangeBar.classList.add('in-compare');
+                        if (!focusSlot) focusSlot = slot;
+                    }
+                } else if (isAnimate && leftIdx !== undefined && rightIdx !== undefined) {
+                    const span = Math.max(1, rightIdx - leftIdx);
+                    const distPx = span * slotWidth;
+                    const dur = Math.min(750, getStepDuration() * 0.78);
+
+                    if (idx === leftIdx) {
+                        box.classList.add('hopping');
+                        rangeBar.classList.add('in-swap');
+                        focusSlot = slot;
+                        if (animateTransition) {
+                            box.animate([
+                                { transform: `translate(${distPx}px, 0) scale(1)` },
+                                { transform: `translate(${distPx * 0.5}px, -64px) scale(1.13)`, offset: 0.42 },
+                                { transform: `translate(${distPx * 0.1}px, -14px) scale(1.04)`, offset: 0.75 },
+                                { transform: 'translate(0, 0) scale(1)' }
+                            ], { duration: dur, easing: 'cubic-bezier(0.25, 1, 0.5, 1)' });
                         }
-                    } else {
-                        box.classList.add('comparing');
+                    } else if (idx === rightIdx) {
+                        box.classList.add('sliding');
+                        rangeBar.classList.add('in-swap');
+                        if (animateTransition) {
+                            box.animate([
+                                { transform: `translate(${-distPx}px, 0) scale(1)` },
+                                { transform: `translate(${-distPx * 0.5}px, 6px) scale(0.96)`, offset: 0.5 },
+                                { transform: 'translate(0, 0) scale(1)' }
+                            ], { duration: dur, easing: 'ease-out' });
+                        }
                     }
                 }
 
-                if (index === sortingSteps.length - 1) {
-                    box.classList.add('sorted');
-                }
-
-                visualizer.appendChild(box);
+                slot.appendChild(box);
+                slot.appendChild(rangeBar);
+                slot.appendChild(indexLabel);
+                visualizer.appendChild(slot);
             });
+
+            if (focusSlot && scrollArea) {
+                focusSlot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            updateControlsUI();
         }
 
-        function playAnimation() {
-            if (!sortingSteps || sortingSteps.length === 0) return;
+        function startTimer() {
             clearInterval(animationTimer);
-            currentStepIndex = 0;
-
             animationTimer = setInterval(() => {
-                if (currentStepIndex < sortingSteps.length) {
-                    renderStep(currentStepIndex);
+                if (currentStepIndex < sortingSteps.length - 1) {
                     currentStepIndex++;
+                    renderStep(currentStepIndex, true);
                 } else {
-                    clearInterval(animationTimer);
+                    pauseAnimation();
                 }
-            }, 900); 
+            }, getStepDuration());
+        }
+
+        function togglePlay() {
+            if (!sortingSteps || sortingSteps.length === 0) return;
+            if (isPlaying) {
+                pauseAnimation();
+            } else {
+                if (currentStepIndex >= sortingSteps.length - 1) {
+                    currentStepIndex = 0;
+                    renderStep(currentStepIndex, false);
+                }
+                isPlaying = true;
+                updateControlsUI();
+                startTimer();
+            }
+        }
+
+        function pauseAnimation() {
+            isPlaying = false;
+            clearInterval(animationTimer);
+            updateControlsUI();
+        }
+
+        function stepForward() {
+            if (!sortingSteps || currentStepIndex >= sortingSteps.length - 1) return;
+            pauseAnimation();
+            currentStepIndex++;
+            renderStep(currentStepIndex, true);
+        }
+
+        function stepBackward() {
+            if (!sortingSteps || currentStepIndex <= 0) return;
+            pauseAnimation();
+            currentStepIndex--;
+            renderStep(currentStepIndex, false);
         }
 
         function resetAnimation() {
-            clearInterval(animationTimer);
+            pauseAnimation();
             currentStepIndex = 0;
             if (sortingSteps && sortingSteps.length > 0) {
-                renderStep(0);
-                statusMsg.innerText = "Animation reset. Click Play to start.";
+                renderStep(0, false);
+                statusMsg.innerText = 'Animation reset. Click Play to start.';
             }
+        }
+
+        if (progressTrack) {
+            progressTrack.addEventListener('click', (e) => {
+                if (!sortingSteps || sortingSteps.length <= 1) return;
+                pauseAnimation();
+                const rect = progressTrack.getBoundingClientRect();
+                const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                currentStepIndex = Math.round(ratio * (sortingSteps.length - 1));
+                renderStep(currentStepIndex, false);
+            });
         }
 
         window.onload = function() {
             if (sortingSteps && sortingSteps.length > 0) {
-                renderStep(0);
+                renderStep(0, false);
             }
         };
     </script>

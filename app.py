@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from nodes import Node, BinaryNode, LinkedList, Stack, PostfixConverter, Queue, Deque, BinaryTree
-from sorting import BubbleSort, SelectionSort, InsertionSort #, MergeSort
+from sorting import BubbleSort, SelectionSort, InsertionSort, MergeSort, QuickSort
 
 app = Flask(__name__)
 
@@ -413,6 +413,47 @@ def insertion_sort_page():
         user_input=user_input
     )
 
+@app.route('/works/mergesort', methods=['GET', 'POST'])
+def merge_sort_page():
+    steps = []
+    sorted_result = None
+    user_input = ""
+
+    if request.method == 'POST':
+        user_input = request.form.get('input_data', '').strip()
+        sorter = MergeSort()
+        parsed_data = sorter.parse_input(user_input)
+
+        if parsed_data:
+            sorted_result, steps = sorter.sort(parsed_data)
+
+    return render_template(
+        'merge_sort.html',
+        steps=steps,
+        sorted_result=sorted_result,
+        user_input=user_input
+    )
+
+@app.route('/works/quicksort', methods=['GET', 'POST'])
+def quick_sort_page():
+    steps = []
+    sorted_result = None
+    user_input = ""
+
+    if request.method == 'POST':
+        user_input = request.form.get('input_data', '').strip()
+        sorter = QuickSort()
+        parsed_data = sorter.parse_input(user_input)
+
+        if parsed_data:
+            sorted_result, steps = sorter.sort(parsed_data)
+
+    return render_template(
+        'quick_sort.html',
+        steps=steps,
+        sorted_result=sorted_result,
+        user_input=user_input
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
