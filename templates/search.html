@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Algorithms Comparison</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #121212; color: #e0e0e0; font-family: sans-serif; padding: 40px; }
+        header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 50px auto; }
+        .logo { font-size: 24px; font-weight: bold; color: #ffffff; text-decoration: none; }
+        .logo span { color: #bb86fc; }
+        nav ul { list-style-type: none; display: flex; gap: 25px; }
+        nav li a { color: #e0e0e0; text-decoration: none; transition: color 0.3s ease; }
+        nav li a:hover, nav li a.active { color: #bb86fc; }
+        .talk-btn { background-color: #bb86fc; color: #121212; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
+
+        .ds-layout {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        .panel {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: left;
+        }
+        .panel h2 { font-size: 20px; color: #ffffff; margin-bottom: 18px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; color: #aaa; font-size: 13px; margin-bottom: 6px; }
+        textarea, input[type="text"], select {
+            width: 100%;
+            background-color: #121212;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+        }
+        textarea { resize: vertical; line-height: 1.4; }
+        textarea:focus, input:focus, select:focus { border-color: #bb86fc; }
+
+        .btn-action {
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 18px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 6px;
+        }
+        .btn-action:hover { background-color: #a368fc; transform: translateY(-2px); }
+
+        .visualizer-screen {
+            background-color: #121212;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 18px;
+            min-height: 160px;
+        }
+        .visualizer-screen p { color: #aaa; font-size: 14px; line-height: 1.6; }
+        .result-success { color: #2ecc71; font-weight: bold; }
+        .result-error { color: #ff5555; font-weight: bold; }
+
+        .back-link-container { max-width: 1000px; margin: 30px auto 0 auto; text-align: left; }
+        .back-link { color: #bb86fc; text-decoration: none; font-size: 14px; }
+        .back-link:hover { text-decoration: underline; }
+
+        @media (max-width: 800px) {
+            body { padding: 20px; }
+            .ds-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Tristan<span>.</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">About</a></li>
+                <li><a href="/works" class="active">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="/contact" class="talk-btn">Let's Talk</a>
+    </header>
+
+    <main>
+        <div class="ds-layout">
+            <!-- Control Panel -->
+            <div class="panel">
+                <h2>Search Algorithms Comparison</h2>
+                <form action="/works/search" method="POST">
+                    <div class="form-group">
+                        <label for="array">Array</label>
+                        <textarea id="array" name="array" rows="8" required>{{ test_data }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="target">Target</label>
+                        <input type="text" id="target" name="target" placeholder="Enter the target integer" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="search_type">Search Algorithm</label>
+                        <select id="search_type" name="search_type">
+                            <option value="linear" {% if search_type == 'linear' %}selected{% endif %}>Linear Search</option>
+                            <option value="binary" {% if search_type == 'binary' %}selected{% endif %}>Binary Search</option>
+                            <option value="ternary" {% if search_type == 'ternary' %}selected{% endif %}>Ternary Search</option>
+                            <option value="exponential" {% if search_type == 'exponential' %}selected{% endif %}>Exponential Search</option>
+                            <option value="interpolation" {% if search_type == 'interpolation' %}selected{% endif %}>Interpolation Search</option>
+                            <option value="jump" {% if search_type == 'jump' %}selected{% endif %}>Jump Search</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-action">Search</button>
+                </form>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="panel">
+                <h2>Search Result</h2>
+                <div class="visualizer-screen">
+                    {% if result != None %}
+                        <p class="result-success">
+                            Target found at index {{ result }} using {{ search_type }} method in {{ execution_time }} milliseconds.
+                        </p>
+                    {% elif error %}
+                        <p class="result-error">{{ error }}</p>
+                    {% else %}
+                        <p>Enter a target integer and select a search algorithm to execute...</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="back-link-container">
+            <a href="/works" class="back-link">&larr; Back to Works</a>
+        </div>
+    </main>
+</body>
+</html>

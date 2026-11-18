@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from nodes import Node, BinaryNode, LinkedList, Stack, PostfixConverter, Queue, Deque, BinaryTree
 from sorting import BubbleSort, SelectionSort, InsertionSort, MergeSort, QuickSort
+import timeit
+from search_algorithms import SearchAlgorithms
 
 app = Flask(__name__)
 
@@ -454,6 +456,84 @@ def quick_sort_page():
         sorted_result=sorted_result,
         user_input=user_input
     )
+
+@app.route('/works/search', methods=['GET', 'POST'])
+def search_page():
+    numbers = range(1, 1001)
+    test_data = ", ".join(map(str, numbers))
+    result = None
+    search_type = None
+    execution_time = None
+    error = None
+
+    if request.method == 'POST':
+        array_str = request.form.get('array')
+        target_str = request.form.get('target')
+        search_type = request.form.get('search_type')
+
+        try:
+            array = list(map(int, array_str.split(',')))
+            target = int(target_str)
+            low, high = 0, len(array) - 1
+
+            result = -1
+
+            if search_type == 'exponential':
+                execution_time = timeit.timeit(
+                    "SearchAlgorithms.exponential_search_wrapper(SearchAlgorithms.exponential_search, array, target)",
+                    globals={**globals(), "array": array, "target": target},
+                    number=1
+                ) * 1000
+                result = SearchAlgorithms.exponential_search_wrapper(SearchAlgorithms.exponential_search, array, target)
+            elif search_type == 'binary':
+                execution_time = timeit.timeit(
+                    "SearchAlgorithms.binary_search_wrapper(SearchAlgorithms.binary_search, array, target)",
+                    globals={**globals(), "array": array, "target": target},
+                    number=1
+                ) * 1000
+                result = SearchAlgorithms.binary_search_wrapper(SearchAlgorithms.binary_search, array, target)
+            elif search_type == 'interpolation':
+                execution_time = timeit.timeit(
+                    "SearchAlgorithms.interpolation_search_wrapper(SearchAlgorithms.interpolation_search, array, target)",
+                    globals={**globals(), "array": array, "target": target},
+                    number=1
+                ) * 1000
+                result = SearchAlgorithms.interpolation_search_wrapper(SearchAlgorithms.interpolation_search, array, target)
+            elif search_type == 'jump':
+                execution_time = timeit.timeit(
+                    "SearchAlgorithms.jump_search_wrapper(SearchAlgorithms.jump_search, array, target)",
+                    globals={**globals(), "array": array, "target": target},
+                    number=1
+                ) * 1000
+                result = SearchAlgorithms.jump_search_wrapper(SearchAlgorithms.jump_search, array, target)
+            elif search_type == 'linear':
+                execution_time = timeit.timeit(
+                    "SearchAlgorithms.linear_search_wrapper(SearchAlgorithms.linear_search, array, target)",
+                    globals={**globals(), "array": array, "target": target},
+                    number=1
+                ) * 1000
+                result = SearchAlgorithms.linear_search_wrapper(SearchAlgorithms.linear_search, array, target)
+            elif search_type == 'ternary':
+                execution_time = timeit.timeit(
+                    "SearchAlgorithms.ternary_search_wrapper(SearchAlgorithms.ternary_search, array, target, low, high)",
+                    globals={**globals(), "array": array, "target": target, "low": low, "high": high},
+                    number=1
+                ) * 1000
+                result = SearchAlgorithms.ternary_search_wrapper(SearchAlgorithms.ternary_search, array, target, low, high)
+
+            return render_template(
+                'search.html',
+                result=result,
+                search_type=search_type,
+                execution_time=execution_time,
+                test_data=array_str
+            )
+        except ValueError:
+            error = "Invalid input. Ensure the array and target are integers."
+            return render_template('search.html', error=error, test_data=array_str or test_data)
+
+    return render_template('search.html', test_data=test_data)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
