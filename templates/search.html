@@ -23,6 +23,11 @@
             gap: 24px;
             align-items: start;
         }
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
         .panel {
             background-color: #1e1e1e;
             border: 1px solid #333;
@@ -73,6 +78,38 @@
         .visualizer-screen p { color: #aaa; font-size: 14px; line-height: 1.6; }
         .result-success { color: #2ecc71; font-weight: bold; }
         .result-error { color: #ff5555; font-weight: bold; }
+
+        /* Reference Container (Bottom-Right Slot) */
+        .reference-box {
+            background-color: #17121d;
+            border: 1px solid #352942;
+            border-radius: 16px;
+            padding: 22px 24px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .reference-label {
+            font-family: monospace;
+            font-size: 11px;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            color: #bb86fc;
+        }
+        .reference-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .reference-text {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #b5a9c4;
+        }
+        .reference-text strong {
+            color: #e4d4f7;
+        }
 
         .back-link-container { max-width: 1000px; margin: 30px auto 0 auto; text-align: left; }
         .back-link { color: #bb86fc; text-decoration: none; font-size: 14px; }
@@ -130,19 +167,30 @@
                 </form>
             </div>
 
-            <!-- Output Panel -->
-            <div class="panel">
-                <h2>Search Result</h2>
-                <div class="visualizer-screen">
-                    {% if result != None %}
-                        <p class="result-success">
-                            Target found at index {{ result }} using {{ search_type }} method in {{ execution_time }} milliseconds.
-                        </p>
-                    {% elif error %}
-                        <p class="result-error">{{ error }}</p>
-                    {% else %}
-                        <p>Enter a target integer and select a search algorithm to execute...</p>
-                    {% endif %}
+            <!-- Right Column: Search Result + Code Reference -->
+            <div class="right-column">
+                <div class="panel">
+                    <h2>Search Result</h2>
+                    <div class="visualizer-screen">
+                        {% if result != None %}
+                            <p class="result-success">
+                                Target found at index {{ result }} using {{ search_type }} method in {{ execution_time }} milliseconds.
+                            </p>
+                        {% elif error %}
+                            <p class="result-error">{{ error }}</p>
+                        {% else %}
+                            <p>Enter a target integer and select a search algorithm to execute...</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Code Reference Container -->
+                <div class="reference-box">
+                    <span class="reference-label">// Code Reference</span>
+                    <div class="reference-title">Mr. Godofredo Avena</div>
+                    <p class="reference-text">
+                        Search algorithm implementations (Linear, Binary, Ternary, Exponential, Interpolation, and Jump Search) and execution timing wrappers adapted from course material provided by <strong>Prof. Godofredo Avena</strong>.
+                    </p>
                 </div>
             </div>
         </div>

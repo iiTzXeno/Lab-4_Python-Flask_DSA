@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <!-- Include Font Awesome 4.7 CDN -->
+    <!-- Font Awesome 4.7 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         * {
@@ -16,15 +16,20 @@
             background-color: #121212;
             color: #e0e0e0;
             font-family: sans-serif;
-            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        /* Top Navigation Header */
+
+        /* Top Navigation Header (Unchanged Centered Layout) */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
             max-width: 1100px;
-            margin: 0 auto 60px auto;
+            margin: 0 auto;
+            padding: 36px 24px;
         }
         .logo {
             font-size: 24px;
@@ -62,46 +67,111 @@
             transform: translateY(-2px);
         }
 
-        /* Hero Section Grid */
-        .hero-container {
+        /* Full-Viewport Main Body Frame */
+        .hero-frame {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #17121d;
+            border-top: 1px solid #352942;
+            overflow: hidden;
+        }
+
+        /* Top Compartment: Full-Bleed Interactive Waves + Centered Content */
+        .hero-stage {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+        }
+        .hero-stage-inner {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1100px;
             display: grid;
             grid-template-columns: 1.2fr 1fr;
-            max-width: 1100px;
-            margin: 0 auto;
             align-items: center;
             gap: 40px;
         }
+
+        /* Interactive Purple Waves Background */
+        a-waves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            display: block;
+        }
+        a-waves svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        a-waves path {
+            fill: none;
+            stroke: rgba(187, 134, 252, 0.24);
+            stroke-width: 1px;
+        }
+
+        /* Cursor Node Dot inside the Wave Stage */
+        .wave-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #bb86fc;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(187, 134, 252, 0.9);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            z-index: 0;
+        }
+        .hero-stage:hover .wave-dot {
+            opacity: 1;
+        }
+
         .hero-content h1 {
-            font-size: 42px;
+            font-size: 46px;
             color: #ffffff;
-            line-height: 1.2;
+            line-height: 1.15;
             margin-bottom: 10px;
         }
         .hero-content h1 span {
             color: #bb86fc;
         }
         .hero-content h2 {
-            font-size: 24px;
-            color: #b0b0b0;
-            margin-bottom: 20px;
+            font-size: 22px;
+            color: #c4b8d4;
+            font-weight: 600;
+            margin-bottom: 18px;
         }
         .hero-content p {
-            color: #999;
+            color: #a399b2;
             font-size: 15px;
-            line-height: 1.6;
+            line-height: 1.65;
             margin-bottom: 30px;
             max-width: 480px;
         }
         .button-group {
             display: flex;
             gap: 15px;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
         }
         .btn-outline {
-            background-color: transparent;
+            background-color: rgba(23, 18, 29, 0.85);
             color: #bb86fc;
             border: 2px solid #bb86fc;
-            padding: 10px 24px;
+            padding: 10px 26px;
             border-radius: 25px;
             text-decoration: none;
             font-weight: bold;
@@ -111,115 +181,812 @@
             background-color: #bb86fc;
             color: #121212;
             transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+            box-shadow: 0 4px 15px rgba(187, 134, 252, 0.35);
         }
 
         /* Social Icons */
         .social-icons {
             display: flex;
-            gap: 15px;
+            gap: 14px;
         }
         .social-icon {
             width: 40px;
             height: 40px;
-            background-color: #1e1e1e;
-            border: 1px solid #333;
+            background-color: #1e1826;
+            border: 1px solid #3a2d4a;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #bb86fc;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 17px;
             transition: all 0.3s ease;
         }
         .social-icon:hover {
             background-color: #bb86fc;
             color: #121212;
+            border-color: #bb86fc;
             transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+            box-shadow: 0 4px 12px rgba(187, 134, 252, 0.35);
         }
 
-        /* Hero Image Container */
+        /* Hero Image Container with Architectural Frame */
         .hero-image-container {
             display: flex;
             justify-content: center;
         }
+        .image-frame {
+            position: relative;
+            padding: 12px;
+            border: 1px solid #3d2f4d;
+            background-color: rgba(18, 18, 18, 0.65);
+        }
+        .image-frame::before,
+        .image-frame::after {
+            content: "";
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: #bb86fc;
+            border-style: solid;
+            pointer-events: none;
+        }
+        .image-frame::before {
+            top: -1px;
+            left: -1px;
+            border-width: 2px 0 0 2px;
+        }
+        .image-frame::after {
+            bottom: -1px;
+            right: -1px;
+            border-width: 0 2px 2px 0;
+        }
         .image-placeholder {
-            width: 320px;
-            height: 380px;
+            width: 300px;
+            height: 360px;
             background-color: #1e1e1e;
-            border: 2px dashed #444;
-            border-radius: 20px;
+            border: 1px dashed #4a3b5c;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #777;
             text-align: center;
-            padding: 20px;
+            overflow: hidden;
         }
         .image-placeholder img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 18px;
+            border-radius: 13px;
+        }
+
+        /* =========================================================
+           BINARY & STRIPE SEPARATOR BARS (7-Bit ASCII for PORTFOLIO)
+           ========================================================= */
+        .a-separator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 10px 28px;
+            border-top: 1px solid #352942;
+            border-bottom: 1px solid #352942;
+            background-color: #130f18;
+            font-family: monospace;
+            font-size: 11px;
+            color: #9e86bd;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            user-select: none;
+        }
+        .a-separator--bottom {
+            border-bottom: none;
+        }
+        .a__triangle {
+            color: #bb86fc;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+        .a__binaries {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex: 1;
+            overflow: hidden;
+        }
+        .a__code {
+            color: #c7b3e0;
+            flex-shrink: 0;
+        }
+        .a__stripes {
+            flex: 1;
+            min-width: 24px;
+            height: 9px;
+            background-image: repeating-linear-gradient(
+                -55deg,
+                rgba(187, 134, 252, 0.38) 0px,
+                rgba(187, 134, 252, 0.38) 1.5px,
+                transparent 1.5px,
+                transparent 6px
+            );
+        }
+
+        /* =========================================================
+           AUTONOMOUS KINETIC "PORTFOLIO" DISPLAY BAND
+           ========================================================= */
+        .portfolio-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            padding: 26px 32px;
+            background: linear-gradient(180deg, #17121d 0%, #1d1626 100%);
+            user-select: none;
+            overflow: hidden;
+        }
+        .portfolio-star {
+            font-size: clamp(22px, 3.2vw, 38px);
+            color: #bb86fc;
+            line-height: 1;
+            flex-shrink: 0;
+            animation: starSlowSpin 18s linear infinite;
+        }
+        @keyframes starSlowSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .s__title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(46px, 8vw, 108px);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: #ffffff;
+            text-transform: uppercase;
+            line-height: 0.92;
+        }
+        .s__title .word {
+            display: inline-flex;
+        }
+
+        /* Individual Clipped 90-Degree 3D Turntable Cell */
+        .char {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            perspective: 700px;
+            padding: 0.05em 0.02em;
+        }
+        .char__prism {
+            display: inline-block;
+            position: relative;
+            transform-style: preserve-3d;
+            transform-origin: center center;
+            transform: translate3d(0, 115%, 0);
+            will-change: transform;
+        }
+        .char__prism.is-ready {
+            transform: translate3d(0, 0%, 0);
+        }
+        .char__face {
+            display: inline-block;
+            backface-visibility: hidden;
+            will-change: transform, color;
+        }
+        .char__face--front {
+            position: relative;
+        }
+        /* Perpendicular 90-degree face for horizontal microwave turn */
+        .char__face--side {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotateY(90deg) translateZ(0.36em);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .char__clone {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            will-change: transform, color;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 850px) {
+            header {
+                flex-wrap: wrap;
+                gap: 16px;
+                padding: 24px 20px;
+            }
+            .hero-stage-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .button-group,
+            .social-icons {
+                justify-content: center;
+            }
+            .a__stripes {
+                min-width: 10px;
+            }
+            .a-separator {
+                font-size: 9px;
+                padding: 8px 12px;
+            }
+            .portfolio-banner {
+                gap: 12px;
+                padding: 20px 12px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header / Navbar -->
+    <!-- Header / Navbar (Centered, Unchanged) -->
     <header>
         <a href="/" class="logo">Tristan<span>.</span></a>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/profile">About</a></li>
-                <li><a href="/works">Portfolio</a></li>
+                <li><a href="/works">Works</a></li>
                 <li><a href="/contact">Contact</a></li>
             </ul>
         </nav>
         <a href="/contact" class="talk-btn">Let's Talk</a>
     </header>
 
-    <!-- Main Hero Section -->
-    <main class="hero-container">
-        <div class="hero-content">
-            <h1>Hi, I'm <span>Tristan</span></h1>
-            <h2>Computer Engineering Student</h2>
-            <p>Building interactive web tools, data structure managers, and backend applications with Python Flask and clean UI designs.</p>
-            
-            <div class="button-group">
-                <a href="/works" class="btn-outline">See Projects</a>
+    <!-- Full-Body Architectural Frame -->
+    <main class="hero-frame">
+        
+        <!-- Top Stage: Full-Bleed Interactive Purple Waves + Profile -->
+        <section class="hero-stage" id="heroStage">
+            <a-waves>
+                <svg class="js-svg"></svg>
+            </a-waves>
+            <div class="wave-dot" id="waveDot"></div>
+
+            <div class="hero-stage-inner">
+                <div class="hero-content">
+                    <h1>Hi, I'm <span>Tristan</span></h1>
+                    <h2>Computer Engineering Student</h2>
+                    <p>Building interactive web tools, data structure managers, and backend applications with Python Flask and clean UI designs.</p>
+                    
+                    <div class="button-group">
+                        <a href="/works" class="btn-outline">See Projects</a>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/iitzx3n0/" target="_blank" class="social-icon" title="Instagram">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                        <a href="https://github.com/iiTzXeno" target="_blank" class="social-icon" title="GitHub">
+                            <i class="fa fa-github"></i>
+                        </a>
+                        <a href="https://www.facebook.com/kyle.gaboy/" target="_blank" class="social-icon" title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@iiTzXeno" target="_blank" class="social-icon" title="YouTube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                        <a href="mailto:gaboytristan18@gmail.com" target="_blank" class="social-icon" title="Gmail">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Self Picture Frame -->
+                <div class="hero-image-container">
+                    <div class="image-frame">
+                        <div class="image-placeholder">
+                            <img src="{{ url_for('static', filename='profile.jpg') }}" alt="Profile Picture" onerror="this.style.display='none'; this.parentElement.innerText='Drop your image here';">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Telemetry + Kinetic PORTFOLIO Footer Band -->
+        <div>
+            <!-- Top Binary Separator (7-Bit ASCII for PORTFOLIO: POR | TF | OL | IO) -->
+            <div class="a-separator">
+                <span class="a__triangle">&#9656;</span>
+                <div class="a__binaries">
+                    <span class="a__code">1010000 1001111 1010010</span>
+                    <span class="a__stripes"></span>
+                    <span class="a__code">1010100 1000110</span>
+                    <span class="a__stripes"></span>
+                    <span class="a__code">1001111 1001100</span>
+                    <span class="a__stripes"></span>
+                    <span class="a__code">1001001 1001111</span>
+                </div>
+                <span class="a__triangle">&#9666;</span>
             </div>
 
-            <!-- Social Links (Instagram, GitHub, Facebook) -->
-            <div class="social-icons">
-                <a href="https://www.instagram.com/iitzx3n0/" target="_blank" class="social-icon" title="Instagram">
-                    <i class="fa fa-instagram"></i>
-                </a>
-                <a href="https://github.com/iiTzXeno" target="_blank" class="social-icon" title="GitHub">
-                    <i class="fa fa-github"></i>
-                </a>
-                <a href="https://www.facebook.com/kyle.gaboy/" target="_blank" class="social-icon" title="Facebook">
-                    <i class="fa fa-facebook"></i>
-                </a>
-                <a href="https://www.youtube.com/@iiTzXeno" target="_blank" class="social-icon" title="YouTube">
-                    <i class="fa fa-youtube"></i>
-                </a>
-                <a href="mailto:gaboytristan18@gmail.com" target="_blank" class="social-icon" title="Gmail">
-                    <i class="fa fa-envelope"></i>
-                </a>
+            <!-- Kinetic Autonomous "PORTFOLIO" Display Band -->
+            <div class="portfolio-banner">
+                <span class="portfolio-star">&#10022;</span>
+                <h1 class="s__title js-kinetic-word" aria-label="PORTFOLIO">PORTFOLIO</h1>
+                <span class="portfolio-star">&#10022;</span>
+            </div>
+
+            <!-- Bottom Binary Separator (7-Bit ASCII for PORTFOLIO: POR | TF | OL | IO) -->
+            <div class="a-separator a-separator--bottom">
+                <span class="a__triangle">&#9656;</span>
+                <div class="a__binaries">
+                    <span class="a__code">1010000 1001111 1010010</span>
+                    <span class="a__stripes"></span>
+                    <span class="a__code">1010100 1000110</span>
+                    <span class="a__stripes"></span>
+                    <span class="a__code">1001111 1001100</span>
+                    <span class="a__stripes"></span>
+                    <span class="a__code">1001001 1001111</span>
+                </div>
+                <span class="a__triangle">&#9666;</span>
             </div>
         </div>
 
-        <!-- Self Picture Frame -->
-        <div class="hero-image-container">
-            <div class="image-placeholder">
-                <img src="{{ url_for('static', filename='profile.jpg') }}" alt="Profile Picture" onerror="this.style.display='none'; this.parentElement.innerText='Drop your image here';">
-            </div>
-        </div>
     </main>
+
+    <!-- Autonomous One-by-One Kinetic Letter Script (Up, Down, Left, Right + 90-Deg Microwave Turn) -->
+    <script>
+        (function initKineticPortfolio() {
+            const titleEl = document.querySelector('.js-kinetic-word');
+            if (!titleEl) return;
+
+            const text = titleEl.textContent.trim();
+            titleEl.textContent = '';
+
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'word';
+            titleEl.appendChild(wordSpan);
+
+            const chars = [];
+            const EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
+            const MOTION_DURATION = 720; // Crisp individual letter motion
+            const PAUSE_BETWEEN = 1500;  // 1.5s stop between each letter
+
+            // Build clipped 3D prism cells (100% autonomous, zero cursor listeners)
+            [...text].forEach((letter) => {
+                const cell = document.createElement('span');
+                cell.className = 'char';
+
+                const prism = document.createElement('span');
+                prism.className = 'char__prism';
+
+                const front = document.createElement('span');
+                front.className = 'char__face char__face--front';
+                front.textContent = letter;
+
+                const side = document.createElement('span');
+                side.className = 'char__face char__face--side';
+                side.setAttribute('aria-hidden', 'true');
+                side.textContent = letter;
+
+                const clone = document.createElement('span');
+                clone.className = 'char__clone';
+                clone.setAttribute('aria-hidden', 'true');
+                clone.textContent = letter;
+
+                prism.appendChild(front);
+                prism.appendChild(side);
+                cell.appendChild(prism);
+                cell.appendChild(clone);
+                wordSpan.appendChild(cell);
+
+                chars.push({ cell, prism, front, side, clone });
+            });
+
+            // Staggered entrance reveal on load
+            chars.forEach((c, idx) => {
+                setTimeout(() => {
+                    c.prism.style.transition = `transform 0.75s ${EASE}`;
+                    c.prism.classList.add('is-ready');
+                }, 100 + idx * 55);
+            });
+
+            // 5 Movements: Up, Down, Left, Right, and 90-Degree Horizontal Microwave Turn
+            const MOVES = ['to-top', 'to-bottom', 'to-left', 'to-right', 'to-microwave-90'];
+            let lastMove = null;
+            let queue = [];
+            let lastCharIndex = -1;
+
+            function getNextChar() {
+                if (queue.length === 0) {
+                    queue = chars.map((_, i) => i);
+                    for (let i = queue.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [queue[i], queue[j]] = [queue[j], queue[i]];
+                    }
+                    if (queue[0] === lastCharIndex && queue.length > 1) {
+                        [queue[0], queue[1]] = [queue[1], queue[0]];
+                    }
+                }
+                const nextIdx = queue.shift();
+                lastCharIndex = nextIdx;
+                return chars[nextIdx];
+            }
+
+            function getNextMove() {
+                const choices = MOVES.filter((m) => m !== lastMove);
+                const chosen = choices[Math.floor(Math.random() * choices.length)];
+                lastMove = chosen;
+                return chosen;
+            }
+
+            function animateSingleLetter(c, move, onDone) {
+                const { prism, front, side, clone } = c;
+
+                prism.style.transition = 'none';
+                front.style.transition = 'none';
+                side.style.transition = 'none';
+                clone.style.transition = 'none';
+
+                if (move === 'to-microwave-90') {
+                    // Pure 90-degree horizontal turntable rotation (no 360 spinning)
+                    clone.style.opacity = '0';
+                    front.style.transform = 'rotateY(0deg) translateZ(0.36em)';
+                    side.style.transform = 'rotateY(90deg) translateZ(0.36em)';
+                    side.style.opacity = '1';
+                    side.style.color = '#bb86fc';
+                    prism.style.transform = 'translateZ(-0.36em) rotateY(0deg)';
+                    void prism.offsetWidth;
+
+                    prism.style.transition = `transform ${MOTION_DURATION + 80}ms ${EASE}`;
+                    side.style.transition = `color ${MOTION_DURATION + 80}ms ease`;
+                    prism.style.transform = 'translateZ(-0.36em) rotateY(-90deg)';
+                    side.style.color = '#ffffff';
+
+                    setTimeout(() => {
+                        prism.style.transition = 'none';
+                        front.style.transform = 'none';
+                        side.style.opacity = '0';
+                        prism.style.transform = 'translate3d(0, 0%, 0)';
+                        void prism.offsetWidth;
+                        onDone();
+                    }, MOTION_DURATION + 100);
+                    return;
+                }
+
+                // Directional Slide Moves (Up, Down, Left, Right)
+                side.style.opacity = '0';
+                let frontEnd = '';
+                let cloneStart = '';
+
+                switch (move) {
+                    case 'to-top':
+                        frontEnd = 'translate3d(0, -112%, 0)';
+                        cloneStart = 'translate3d(0, 112%, 0)';
+                        break;
+                    case 'to-bottom':
+                        frontEnd = 'translate3d(0, 112%, 0)';
+                        cloneStart = 'translate3d(0, -112%, 0)';
+                        break;
+                    case 'to-left':
+                        frontEnd = 'translate3d(-115%, 0, 0)';
+                        cloneStart = 'translate3d(115%, 0, 0)';
+                        break;
+                    case 'to-right':
+                        frontEnd = 'translate3d(115%, 0, 0)';
+                        cloneStart = 'translate3d(-115%, 0, 0)';
+                        break;
+                }
+
+                front.style.transform = 'translate3d(0, 0%, 0)';
+                clone.style.transform = cloneStart;
+                clone.style.opacity = '1';
+                clone.style.color = '#bb86fc';
+                void front.offsetWidth;
+
+                front.style.transition = `transform ${MOTION_DURATION}ms ${EASE}`;
+                clone.style.transition = `transform ${MOTION_DURATION}ms ${EASE}, color ${MOTION_DURATION}ms ease`;
+
+                front.style.transform = frontEnd;
+                clone.style.transform = 'translate3d(0, 0%, 0)';
+                clone.style.color = '#ffffff';
+
+                setTimeout(() => {
+                    front.style.transition = 'none';
+                    clone.style.transition = 'none';
+                    front.style.transform = 'translate3d(0, 0%, 0)';
+                    clone.style.opacity = '0';
+                    void front.offsetWidth;
+                    onDone();
+                }, MOTION_DURATION + 20);
+            }
+
+            // Strict one-by-one scheduler with a 1.5s pause after every letter
+            function runNextStep() {
+                const targetChar = getNextChar();
+                const moveType = getNextMove();
+
+                animateSingleLetter(targetChar, moveType, () => {
+                    setTimeout(runNextStep, PAUSE_BETWEEN);
+                });
+            }
+
+            const entranceFinishTime = 100 + chars.length * 55 + 850;
+            setTimeout(runNextStep, entranceFinishTime);
+        })();
+    </script>
+
+    <!-- Interactive Curved Lines & Cursor Node Script -->
+    <script>
+        class Grad {
+            constructor(x, y, z) {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            }
+            dot2(x, y) {
+                return this.x * x + this.y * y;
+            }
+        }
+
+        class Noise {
+            constructor(seed = 0) {
+                this.grad3 = [
+                    new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0),
+                    new Grad(1, 0, 1), new Grad(-1, 0, 1), new Grad(1, 0, -1), new Grad(-1, 0, -1),
+                    new Grad(0, 1, 1), new Grad(0, -1, 1), new Grad(0, 1, -1), new Grad(0, -1, -1)
+                ];
+                this.p = [
+                    151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,
+                    8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,
+                    35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,
+                    134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,
+                    55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,
+                    18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,
+                    250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,
+                    189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,
+                    172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,
+                    228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,
+                    107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,
+                    138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
+                ];
+                this.perm = new Array(512);
+                this.gradP = new Array(512);
+                this.seed(seed);
+            }
+            seed(seed) {
+                if (seed > 0 && seed < 1) seed *= 65536;
+                seed = Math.floor(seed);
+                if (seed < 256) seed |= seed << 8;
+                for (let i = 0; i < 256; i++) {
+                    let v = (i & 1) ? (this.p[i] ^ (seed & 255)) : (this.p[i] ^ ((seed >> 8) & 255));
+                    this.perm[i] = this.perm[i + 256] = v;
+                    this.gradP[i] = this.gradP[i + 256] = this.grad3[v % 12];
+                }
+            }
+            fade(t) {
+                return t * t * t * (t * (t * 6 - 15) + 10);
+            }
+            lerp(a, b, t) {
+                return (1 - t) * a + t * b;
+            }
+            perlin2(x, y) {
+                let X = Math.floor(x), Y = Math.floor(y);
+                x -= X;
+                y -= Y;
+                X &= 255;
+                Y &= 255;
+                const n00 = this.gradP[X + this.perm[Y]].dot2(x, y);
+                const n01 = this.gradP[X + this.perm[Y + 1]].dot2(x, y - 1);
+                const n10 = this.gradP[X + 1 + this.perm[Y]].dot2(x - 1, y);
+                const n11 = this.gradP[X + 1 + this.perm[Y + 1]].dot2(x - 1, y - 1);
+                const u = this.fade(x);
+                return this.lerp(this.lerp(n00, n10, u), this.lerp(n01, n11, u), this.fade(y));
+            }
+        }
+
+        class AWaves extends HTMLElement {
+            connectedCallback() {
+                this.svg = this.querySelector('.js-svg');
+                this.dot = document.getElementById('waveDot');
+                this.mouse = {
+                    x: -10, y: 0,
+                    lx: 0, ly: 0,
+                    sx: 0, sy: 0,
+                    v: 0, vs: 0, a: 0,
+                    set: false
+                };
+                this.lines = [];
+                this.paths = [];
+                this.noise = new Noise(Math.random());
+
+                this.setSize();
+                this.setLines();
+                this.bindEvents();
+                this.raf = requestAnimationFrame(this.tick.bind(this));
+            }
+
+            disconnectedCallback() {
+                cancelAnimationFrame(this.raf);
+            }
+
+            bindEvents() {
+                window.addEventListener('resize', () => {
+                    this.setSize();
+                    this.setLines();
+                });
+
+                window.addEventListener('mousemove', (e) => {
+                    this.updateMousePosition(e.clientX, e.clientY);
+                }, { passive: true });
+
+                window.addEventListener('touchmove', (e) => {
+                    if (e.touches.length > 0) {
+                        this.updateMousePosition(e.touches[0].clientX, e.touches[0].clientY);
+                    }
+                }, { passive: true });
+            }
+
+            setSize() {
+                this.bounding = this.getBoundingClientRect();
+                this.svg.style.width = `${this.bounding.width}px`;
+                this.svg.style.height = `${this.bounding.height}px`;
+            }
+
+            setLines() {
+                const { width, height } = this.bounding;
+                this.lines = [];
+                this.paths.forEach((path) => path.remove());
+                this.paths = [];
+
+                const xGap = 12;
+                const yGap = 32;
+                const oWidth = width + 200;
+                const oHeight = height + 30;
+                const totalLines = Math.ceil(oWidth / xGap);
+                const totalPoints = Math.ceil(oHeight / yGap);
+                const xStart = (width - xGap * totalLines) / 2;
+                const yStart = (height - yGap * totalPoints) / 2;
+
+                for (let i = 0; i <= totalLines; i++) {
+                    const points = [];
+                    for (let j = 0; j <= totalPoints; j++) {
+                        points.push({
+                            x: xStart + xGap * i,
+                            y: yStart + yGap * j,
+                            wave: { x: 0, y: 0 },
+                            cursor: { x: 0, y: 0, vx: 0, vy: 0 }
+                        });
+                    }
+
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    this.svg.appendChild(path);
+                    this.paths.push(path);
+                    this.lines.push(points);
+                }
+            }
+
+            updateMousePosition(x, y) {
+                this.bounding = this.getBoundingClientRect();
+                const { mouse } = this;
+                mouse.x = x - this.bounding.left;
+                mouse.y = y - this.bounding.top;
+
+                if (!mouse.set) {
+                    mouse.sx = mouse.x;
+                    mouse.sy = mouse.y;
+                    mouse.lx = mouse.x;
+                    mouse.ly = mouse.y;
+                    mouse.set = true;
+                }
+            }
+
+            movePoints(time) {
+                const { lines, mouse, noise } = this;
+                lines.forEach((points) => {
+                    points.forEach((p) => {
+                        const move = noise.perlin2(
+                            (p.x + time * 0.0125) * 0.002,
+                            (p.y + time * 0.005) * 0.0015
+                        ) * 12;
+
+                        p.wave.x = Math.cos(move) * 32;
+                        p.wave.y = Math.sin(move) * 16;
+
+                        const dx = p.x - mouse.sx;
+                        const dy = p.y - mouse.sy;
+                        const d = Math.hypot(dx, dy);
+                        const l = Math.max(175, mouse.vs);
+
+                        if (d < l) {
+                            const s = 1 - d / l;
+                            const f = Math.cos(d * 0.001) * s;
+                            p.cursor.vx += Math.cos(mouse.a) * f * l * mouse.vs * 0.00065;
+                            p.cursor.vy += Math.sin(mouse.a) * f * l * mouse.vs * 0.00065;
+                        }
+
+                        p.cursor.vx += (0 - p.cursor.x) * 0.005;
+                        p.cursor.vy += (0 - p.cursor.y) * 0.005;
+                        p.cursor.vx *= 0.925;
+                        p.cursor.vy *= 0.925;
+                        p.cursor.x += p.cursor.vx * 2;
+                        p.cursor.y += p.cursor.vy * 2;
+                        p.cursor.x = Math.min(100, Math.max(-100, p.cursor.x));
+                        p.cursor.y = Math.min(100, Math.max(-100, p.cursor.y));
+                    });
+                });
+            }
+
+            moved(point, withCursorForce = true) {
+                const coords = {
+                    x: point.x + point.wave.x + (withCursorForce ? point.cursor.x : 0),
+                    y: point.y + point.wave.y + (withCursorForce ? point.cursor.y : 0)
+                };
+                coords.x = Math.round(coords.x * 10) / 10;
+                coords.y = Math.round(coords.y * 10) / 10;
+                return coords;
+            }
+
+            drawLines() {
+                const { lines, paths } = this;
+                lines.forEach((points, lIndex) => {
+                    let p1 = this.moved(points[0], false);
+                    let d = `M ${p1.x} ${p1.y}`;
+
+                    points.forEach((point, pIndex) => {
+                        const isLast = pIndex === points.length - 1;
+                        p1 = this.moved(point, !isLast);
+                        const p2 = this.moved(points[pIndex + 1] || points[points.length - 1], !isLast);
+                        d += ` Q ${p1.x} ${p1.y}, ${(p1.x + p2.x) / 2} ${(p1.y + p2.y) / 2}`;
+                    });
+
+                    paths[lIndex].setAttribute('d', d);
+                });
+            }
+
+            tick(time) {
+                const { mouse } = this;
+                mouse.sx += (mouse.x - mouse.sx) * 0.1;
+                mouse.sy += (mouse.y - mouse.sy) * 0.1;
+
+                if (this.dot) {
+                    this.dot.style.left = `${mouse.sx}px`;
+                    this.dot.style.top = `${mouse.sy}px`;
+                }
+
+                const dx = mouse.x - mouse.lx;
+                const dy = mouse.y - mouse.ly;
+                const d = Math.hypot(dx, dy);
+
+                mouse.v = d;
+                mouse.vs += (d - mouse.vs) * 0.1;
+                mouse.vs = Math.min(100, mouse.vs);
+                mouse.lx = mouse.x;
+                mouse.ly = mouse.y;
+                mouse.a = Math.atan2(dy, dx);
+
+                this.movePoints(time);
+                this.drawLines();
+                this.raf = requestAnimationFrame(this.tick.bind(this));
+            }
+        }
+
+        customElements.define('a-waves', AWaves);
+    </script>
 
 </body>
 </html>
